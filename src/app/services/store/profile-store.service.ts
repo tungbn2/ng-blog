@@ -19,7 +19,7 @@ export class ProfileStoreService {
         this.profile = profile.profile;
         this.ProfileData.next({ ...this.profile });
       },
-      (err) => alert(err.error.message)
+      (err) => console.log(err)
     );
   }
 
@@ -29,7 +29,7 @@ export class ProfileStoreService {
         this.profile = profile.profile;
         this.ProfileData.next({ ...this.profile });
       },
-      (err) => alert(err.error.message)
+      (err) => console.log(err)
     );
   }
 
@@ -39,7 +39,7 @@ export class ProfileStoreService {
         this.profile = profile.profile;
         this.ProfileData.next({ ...this.profile });
       },
-      (err) => alert(err.error.message)
+      (err) => console.log(err)
     );
   }
 }

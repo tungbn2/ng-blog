@@ -1,6 +1,7 @@
+import { Router } from '@angular/router';
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
-import { ArticlesModel } from 'src/app/models';
+import { ArticlesModel, OtherModel } from 'src/app/models';
 import { ConnectApiService } from '../connect-api/connect-api.service';
 
 @Injectable({
@@ -8,20 +9,20 @@ import { ConnectApiService } from '../connect-api/connect-api.service';
 })
 export class ArticleStoreService {
   private ArticlesList: ArticlesModel.Article[] = [];
-  private CurrentArticle!: ArticlesModel.Article;
+  private CurrentArticle: ArticlesModel.Article | null = null;
 
   ArticlesListUpdate = new Subject<ArticlesModel.Article[]>();
   CurrentArticleUpdate = new Subject<ArticlesModel.Article>();
 
-  constructor(private api: ConnectApiService) {}
+  constructor(private api: ConnectApiService, private router: Router) {}
 
-  GetListArticles() {
-    this.api.GetListArticles().subscribe(
+  GetListArticles(params: OtherModel.getArticleParam) {
+    this.api.GetListArticles(params).subscribe(
       (articlesData) => {
         this.ArticlesList = articlesData.articles;
-        this.ArticlesListUpdate.next({ ...this.ArticlesList });
+        this.ArticlesListUpdate.next(this.ArticlesList.slice());
       },
-      (err) => alert(err.error.message)
+      (err) => console.log(err)
     );
   }
 
@@ -29,9 +30,11 @@ export class ArticleStoreService {
     this.api.GetFeedArticles().subscribe(
       (articlesData) => {
         this.ArticlesList = articlesData.articles;
-        this.ArticlesListUpdate.next({ ...this.ArticlesList });
+        this.ArticlesListUpdate.next(this.ArticlesList.slice());
       },
-      (err) => alert(err.error.message)
+      (err) => {
+        console.log(err);
+      }
     );
   }
 
@@ -41,7 +44,7 @@ export class ArticleStoreService {
         this.CurrentArticle = articleData.article;
         this.CurrentArticleUpdate.next({ ...this.CurrentArticle });
       },
-      (err) => alert(err.error.message)
+      (err) => console.log(err)
     );
   }
 
@@ -49,56 +52,61 @@ export class ArticleStoreService {
     this.api.PostCreateArticle(newArticle).subscribe(
       (articleData) => {
         this.ArticlesList.unshift(articleData.article);
-        this.ArticlesListUpdate.next({ ...this.ArticlesList });
+        this.ArticlesListUpdate.next(this.ArticlesList.slice());
       },
-      (err) => alert(err.error.message)
+      (err) => console.log(err)
     );
   }
 
   UpdateArticle(updateArticle: ArticlesModel.UpdateArticle, slug: string) {
     this.api.PutUpdateArticle(updateArticle, slug).subscribe(
       (articleData) => {
-        let updateArticle = articleData.article;
-        for (let item of this.ArticlesList) {
-          if (item.slug == updateArticle.slug) {
-            item = updateArticle;
-            break;
-          }
-        }
-        this.ArticlesListUpdate.next({ ...this.ArticlesList });
+        this.CurrentArticle = articleData.article;
+        this.CurrentArticleUpdate.next({ ...this.CurrentArticle });
+        console.log('Update Article Successfully!');
       },
-      (err) => alert(err.error.message)
+      (err) => console.log(err)
     );
   }
 
   DeleteArticle(slug: string) {
     this.api.DeleteArticle(slug).subscribe(
       () => {
-        let index = -1;
-        for (let i = 0; i < this.ArticlesList.length; i++) {
-          if (this.ArticlesList[i].slug == slug) {
-            index = i;
-            break;
-          }
-        }
-        this.ArticlesList.splice(index, 1);
-        this.ArticlesListUpdate.next({ ...this.ArticlesList });
+        alert('Delete article successfully!!!');
       },
-      (err) => alert(err.error.message)
+      (err) => console.log(err)
     );
   }
 
   FavoriteArticle(slug: string) {
     this.api.PostFavoriteArticle(slug).subscribe(
-      (article) => {},
-      (err) => alert(err.error.message)
+      (favoriteArticle) => {
+        this.CurrentArticle = favoriteArticle.article;
+        this.ArticlesList.forEach((item) => {
+          if (item.slug == favoriteArticle.article.slug)
+            item = { ...favoriteArticle.article };
+        });
+
+        this.CurrentArticleUpdate.next({ ...this.CurrentArticle });
+        this.ArticlesListUpdate.next(this.ArticlesList.slice());
+      },
+      (err) => console.log(err)
     );
   }
 
   UnfavoriteArticle(slug: string) {
     this.api.DeleteUnfavoriteArticle(slug).subscribe(
-      (article) => {},
-      (err) => alert(err.error.message)
+      (unfavoriteArticle) => {
+        this.CurrentArticle = unfavoriteArticle.article;
+        this.ArticlesList.forEach((item) => {
+          if (item.slug == unfavoriteArticle.article.slug)
+            item = { ...unfavoriteArticle.article };
+        });
+
+        this.CurrentArticleUpdate.next({ ...this.CurrentArticle });
+        this.ArticlesListUpdate.next(this.ArticlesList.slice());
+      },
+      (err) => console.log(err)
     );
   }
 }

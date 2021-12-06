@@ -29,7 +29,7 @@ export class AuthStoreService {
         this.router.navigate(['/']);
       },
       (err: any) => {
-        alert(err.error.message);
+        console.log(err);
       }
     );
   }
@@ -61,11 +61,11 @@ export class AuthStoreService {
         this.userData = newUser.user;
         this.currentUser.next({ ...this.userData });
         localStorage.setItem('userBlogData', JSON.stringify(newUser.user));
-        alert('Login success!');
+        alert('Register success!');
         this.router.navigate(['/']);
       },
       (err: any) => {
-        alert(err.error.message);
+        console.log(err);
       }
     );
   }
@@ -77,12 +77,21 @@ export class AuthStoreService {
         this.currentUser.next({ ...this.userData });
       },
       (err: any) => {
-        alert(err.error.message);
+        console.log(err);
       }
     );
   }
 
   UpdateUser(updateUser: UpdateUser) {
-    this.api.PutUpdateUser(updateUser).subscribe();
+    this.api.PutUpdateUser(updateUser).subscribe(
+      (AuthUser) => {
+        this.userData = AuthUser.user;
+        this.currentUser.next({ ...this.userData });
+        localStorage.setItem('userBlogData', JSON.stringify(AuthUser.user));
+        alert('Update success!');
+        this.router.navigate(['/']);
+      },
+      (err) => console.log(err)
+    );
   }
 }

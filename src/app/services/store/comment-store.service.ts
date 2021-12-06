@@ -18,17 +18,19 @@ export class CommentStoreService {
         this.CommentList.push(newComment.comment);
         this.CommentListData.next(this.CommentList.slice());
       },
-      (err) => alert(err.error.message)
+      (err) => console.log(err)
     );
   }
 
   GetCommentsFromArticle(slug: string) {
     this.api.GetCommentsFromArticle(slug).subscribe(
       (commentsData) => {
-        this.CommentList = commentsData.comments;
+        this.CommentList = commentsData.comments.length
+          ? commentsData.comments
+          : [];
         this.CommentListData.next(this.CommentList.slice());
       },
-      (err) => alert(err.error.message)
+      (err) => console.log(err)
     );
   }
 
@@ -42,7 +44,7 @@ export class CommentStoreService {
         this.CommentList.splice(index, 1);
         this.CommentListData.next(this.CommentList.slice());
       },
-      (err) => alert(err.error.message)
+      (err) => console.log(err)
     );
   }
 }

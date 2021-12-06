@@ -18,10 +18,14 @@ export interface NewUser {
   user: { username: string; email: string; password: string };
 }
 
-export interface UpdateUser {
+export interface UpdateUserData {
   email?: string;
   bio?: string;
   image?: string;
   username?: string;
   password?: string;
+}
+
+export interface UpdateUser {
+  user: UpdateUserData;
 }

@@ -19,21 +19,20 @@ import {
 } from 'src/app/models/Articles.model';
 import { Profile } from 'src/app/models/Profile.model';
 import * as Api from './api-data';
+import { OtherModel } from 'src/app/models';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ConnectApiService {
   private get ApiHeaderWithToken() {
-    const token = JSON.parse(localStorage.getItem('userBlogData') || '');
+    const token = JSON.parse(localStorage.getItem('userBlogData') || '')?.token;
     return {
       headers: new HttpHeaders({
-        authorization: token,
+        authorization: 'Bearer ' + token,
       }),
     };
   }
-
-  private ArticlesParams: any = {};
 
   constructor(private http: HttpClient) {}
 
@@ -87,10 +86,16 @@ export class ConnectApiService {
     );
   }
 
-  GetListArticles() {
+  GetListArticles(GetArticlesParams: OtherModel.getArticleParam) {
+    let params = new HttpParams({
+      fromObject: GetArticlesParams as any,
+    });
+
     return this.http.get<MultiArticles>(
-      Api.BASE_URL + Api.EndpointsArticles().GetArticle,
-      { params: new HttpParams({ fromObject: this.ArticlesParams }) }
+      Api.BASE_URL + Api.EndpointsArticles().ListArticles,
+      {
+        params,
+      }
     );
   }
 
@@ -103,7 +108,7 @@ export class ConnectApiService {
 
   GetArticleBySlug(slug: string) {
     return this.http.get<SingleArticle>(
-      Api.BASE_URL + Api.EndpointsArticles().GetArticle
+      Api.BASE_URL + Api.EndpointsArticles(slug).GetArticle
     );
   }
 
@@ -140,7 +145,7 @@ export class ConnectApiService {
 
   GetCommentsFromArticle(slug: string) {
     return this.http.get<MultiComments>(
-      Api.BASE_URL + Api.EndpointsCommnent(slug).GetCommentsFromArticle
+      Api.BASE_URL + Api.EndpointsCommnent(slug).GetCommentsFromArticle, this.ApiHeaderWithToken
     );
   }
 
