@@ -8,7 +8,7 @@ import { switchMap, tap } from 'rxjs/operators';
 
 export interface CurrentArticleAndProfile {
   currentArticle: ArticlesModel.Article;
-  author: ProfileModel.Profile;
+  author: ProfileModel.ProfileData;
 }
 @Injectable({
   providedIn: 'root',
@@ -71,14 +71,14 @@ export class ArticleStoreService {
         tap((author) => {
           this.CurrentArticle
             ? (this.CurrentArticleAndProfile = {
-                author,
+                author: author.profile,
                 currentArticle: this.CurrentArticle,
               })
             : '';
           this.CurrentArticleAndProfile
-            ? this.CurrentArticleAndProfileUpdate.next(
-                this.CurrentArticleAndProfile
-              )
+            ? this.CurrentArticleAndProfileUpdate.next({
+                ...this.CurrentArticleAndProfile,
+              })
             : '';
         })
       )
@@ -143,6 +143,34 @@ export class ArticleStoreService {
 
         this.CurrentArticleUpdate.next({ ...this.CurrentArticle });
         this.ArticlesListUpdate.next({ ...this.ArticlesList });
+      },
+      (err) => console.log(err)
+    );
+  }
+
+  FollowUserFromArticle(username: string) {
+    this.api.PostFollowUser(username).subscribe(
+      (profile) => {
+        if (this.CurrentArticleAndProfile) {
+          this.CurrentArticleAndProfile.author = profile.profile;
+          this.CurrentArticleAndProfileUpdate.next({
+            ...this.CurrentArticleAndProfile,
+          });
+        }
+      },
+      (err) => console.log(err)
+    );
+  }
+
+  UnFollowUserFromArticle(username: string) {
+    this.api.DeleteUnfollowUser(username).subscribe(
+      (profile) => {
+        if (this.CurrentArticleAndProfile) {
+          this.CurrentArticleAndProfile.author = profile.profile;
+          this.CurrentArticleAndProfileUpdate.next({
+            ...this.CurrentArticleAndProfile,
+          });
+        }
       },
       (err) => console.log(err)
     );
