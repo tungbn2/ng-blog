@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
+import { UserModel } from 'src/app/models';
 import {
   loginData,
   NewUser,
@@ -19,7 +20,8 @@ export class AuthStoreService {
 
   constructor(private api: ConnectApiService, private router: Router) {}
 
-  Login(loginData: loginData) {
+  Login(EmailAndPass: UserModel.EmailAndPass) {
+    let loginData: UserModel.loginData = { user: EmailAndPass };
     this.api.Login(loginData).subscribe(
       (AuthUser) => {
         this.userData = AuthUser.user;
@@ -49,13 +51,13 @@ export class AuthStoreService {
 
   Logout() {
     this.router.navigateByUrl('/login');
-    localStorage.removeItem('userData');
+    localStorage.removeItem('userBlogData');
     this.currentUser.next(null);
     alert('logout success!');
   }
 
-  Registration(username: string, email: string, password: string) {
-    let newUser: NewUser = { user: { username, email, password } };
+  Registration(RegisterData: UserModel.RegisterData) {
+    let newUser: NewUser = { user: RegisterData };
     this.api.Registration(newUser).subscribe(
       (newUser) => {
         this.userData = newUser.user;

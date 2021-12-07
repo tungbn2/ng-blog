@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { ArticlePageComponent } from './modules/article-page/article-page.component';
-import { EditorPageComponent } from './modules/editor-page/editor-page.component';
-import { ProfilePageComponent } from './modules/profile-page/profile-page.component';
+
+import { LoginComponent } from './modules/auth-page/login/login.component';
+import { RegisterComponent } from './modules/auth-page/register/register.component';
 
 const routes: Routes = [
   {
@@ -14,12 +14,10 @@ const routes: Routes = [
       ),
   },
   {
-    path: 'auth',
-    loadChildren: () =>
-      import('./modules/auth-page/auth-page.module').then(
-        (m) => m.AuthPageModule
-      ),
+    path: 'login',
+    component: LoginComponent,
   },
+  { path: 'register', component: RegisterComponent },
   {
     path: 'settings',
     loadChildren: () =>

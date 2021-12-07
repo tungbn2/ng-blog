@@ -8,10 +8,13 @@ import { ConnectApiService } from '../connect-api/connect-api.service';
   providedIn: 'root',
 })
 export class ArticleStoreService {
-  private ArticlesList: ArticlesModel.Article[] = [];
+  private ArticlesList: ArticlesModel.MultiArticles = {
+    articles: [],
+    articlesCount: 0,
+  };
   private CurrentArticle: ArticlesModel.Article | null = null;
 
-  ArticlesListUpdate = new Subject<ArticlesModel.Article[]>();
+  ArticlesListUpdate = new Subject<ArticlesModel.MultiArticles>();
   CurrentArticleUpdate = new Subject<ArticlesModel.Article>();
 
   constructor(private api: ConnectApiService, private router: Router) {}
@@ -19,8 +22,8 @@ export class ArticleStoreService {
   GetListArticles(params: OtherModel.getArticleParam) {
     this.api.GetListArticles(params).subscribe(
       (articlesData) => {
-        this.ArticlesList = articlesData.articles;
-        this.ArticlesListUpdate.next(this.ArticlesList.slice());
+        this.ArticlesList = articlesData;
+        this.ArticlesListUpdate.next({ ...this.ArticlesList });
       },
       (err) => console.log(err)
     );
@@ -29,8 +32,8 @@ export class ArticleStoreService {
   GetFeedArticles() {
     this.api.GetFeedArticles().subscribe(
       (articlesData) => {
-        this.ArticlesList = articlesData.articles;
-        this.ArticlesListUpdate.next(this.ArticlesList.slice());
+        this.ArticlesList = articlesData;
+        this.ArticlesListUpdate.next({ ...this.ArticlesList });
       },
       (err) => {
         console.log(err);
@@ -51,8 +54,8 @@ export class ArticleStoreService {
   CreateArticle(newArticle: ArticlesModel.NewArticle) {
     this.api.PostCreateArticle(newArticle).subscribe(
       (articleData) => {
-        this.ArticlesList.unshift(articleData.article);
-        this.ArticlesListUpdate.next(this.ArticlesList.slice());
+        this.ArticlesList.articles.unshift(articleData.article);
+        this.ArticlesListUpdate.next({ ...this.ArticlesList });
       },
       (err) => console.log(err)
     );
@@ -82,13 +85,13 @@ export class ArticleStoreService {
     this.api.PostFavoriteArticle(slug).subscribe(
       (favoriteArticle) => {
         this.CurrentArticle = favoriteArticle.article;
-        this.ArticlesList.forEach((item) => {
+        this.ArticlesList.articles.forEach((item) => {
           if (item.slug == favoriteArticle.article.slug)
             item = { ...favoriteArticle.article };
         });
 
         this.CurrentArticleUpdate.next({ ...this.CurrentArticle });
-        this.ArticlesListUpdate.next(this.ArticlesList.slice());
+        this.ArticlesListUpdate.next({ ...this.ArticlesList });
       },
       (err) => console.log(err)
     );
@@ -98,13 +101,13 @@ export class ArticleStoreService {
     this.api.DeleteUnfavoriteArticle(slug).subscribe(
       (unfavoriteArticle) => {
         this.CurrentArticle = unfavoriteArticle.article;
-        this.ArticlesList.forEach((item) => {
+        this.ArticlesList.articles.forEach((item) => {
           if (item.slug == unfavoriteArticle.article.slug)
             item = { ...unfavoriteArticle.article };
         });
 
         this.CurrentArticleUpdate.next({ ...this.CurrentArticle });
-        this.ArticlesListUpdate.next(this.ArticlesList.slice());
+        this.ArticlesListUpdate.next({ ...this.ArticlesList });
       },
       (err) => console.log(err)
     );

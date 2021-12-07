@@ -1,0 +1,7 @@
+.avatar-header {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 2px solid gray;
+  margin: auto 5px;
+}

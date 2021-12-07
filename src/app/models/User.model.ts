@@ -10,12 +10,21 @@ export interface AuthUser {
   user: User;
 }
 
+export interface EmailAndPass {
+  email: string;
+  password: string;
+}
 export interface loginData {
-  user: { email: string; password: string };
+  user: EmailAndPass;
 }
 
+export interface RegisterData {
+  username: string;
+  email: string;
+  password: string;
+}
 export interface NewUser {
-  user: { username: string; email: string; password: string };
+  user: RegisterData;
 }
 
 export interface UpdateUserData {

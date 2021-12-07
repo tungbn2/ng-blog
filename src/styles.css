@@ -4,3 +4,17 @@
   margin: 0;
   padding: 0;
 }
+
+html,
+body {
+  font-size: 16px;
+  font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
+}
+
+/* body {
+  background: url("https://pdp.edu.vn/wp-content/uploads/2021/04/hinh-nen-powerpoint-dep-nhat-2.jpg")
+    no-repeat;
+  background-size: 100vw 100vh;
+  background-position: center;
+  background-attachment: fixed;
+} */
