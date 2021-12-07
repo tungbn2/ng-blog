@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ProfileStoreService } from 'src/app/services/store/profile-store.service';
+import { ArticlesModel } from 'src/app/models';
+import { ArticleStoreService } from 'src/app/services/store/article-store.service';
 import { TagsStoreService } from 'src/app/services/store/tags-store.service';
 
 @Component({
@@ -8,15 +9,22 @@ import { TagsStoreService } from 'src/app/services/store/tags-store.service';
   styleUrls: ['./home-page.component.css'],
 })
 export class HomePageComponent implements OnInit {
+  articleList: ArticlesModel.Article[] = [];
+  totalArticles: number = 0;
+  tagList: string[] = [];
+
   constructor(
     private tags: TagsStoreService,
-    private profile: ProfileStoreService
+    private article: ArticleStoreService
   ) {}
 
   ngOnInit(): void {
-    this.profile.GetProfile('Gerome');
-    this.profile.ProfileWithArticleUpdate.subscribe((data) => {
-      console.log(data);
+    this.article.GetListArticles({});
+    this.article.ArticlesListUpdate.subscribe((articlesData) => {
+      console.log(articlesData);
+
+      this.articleList = articlesData.articles;
+      this.totalArticles = articlesData.articlesCount;
     });
   }
 }

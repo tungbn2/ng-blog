@@ -13,7 +13,6 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {}
 
   onSubmit(form: NgForm) {
-    console.log(form.value);
     this.auth.Login(form.value)
   }
 }
