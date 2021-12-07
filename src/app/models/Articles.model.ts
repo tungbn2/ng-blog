@@ -1,4 +1,4 @@
-import { Profile } from './Profile.model';
+import {ProfileData } from './Profile.model';
 
 export interface Article {
   slug: string;
@@ -10,7 +10,7 @@ export interface Article {
   updatedAt: string;
   favorited: boolean;
   favoritesCount: number;
-  author: Profile;
+  author: ProfileData;
 }
 
 export interface SingleArticle {
@@ -45,7 +45,7 @@ export interface Comment {
   createdAt: string;
   updatedAt: string;
   body: string;
-  author: Profile;
+  author: ProfileData;
 }
 
 export interface SingleComment {

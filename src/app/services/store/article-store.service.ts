@@ -1,9 +1,15 @@
+import { Profile } from './../../models/Profile.model';
 import { Router } from '@angular/router';
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
-import { ArticlesModel, OtherModel } from 'src/app/models';
+import { ArticlesModel, OtherModel, ProfileModel } from 'src/app/models';
 import { ConnectApiService } from '../connect-api/connect-api.service';
+import { switchMap, tap } from 'rxjs/operators';
 
+export interface CurrentArticleAndProfile {
+  currentArticle: ArticlesModel.Article;
+  author: ProfileModel.ProfileData;
+}
 @Injectable({
   providedIn: 'root',
 })
@@ -13,9 +19,11 @@ export class ArticleStoreService {
     articlesCount: 0,
   };
   private CurrentArticle: ArticlesModel.Article | null = null;
+  private CurrentArticleAndProfile: CurrentArticleAndProfile | null = null;
 
   ArticlesListUpdate = new Subject<ArticlesModel.MultiArticles>();
   CurrentArticleUpdate = new Subject<ArticlesModel.Article>();
+  CurrentArticleAndProfileUpdate = new Subject<CurrentArticleAndProfile>();
 
   constructor(private api: ConnectApiService, private router: Router) {}
 
@@ -51,6 +59,32 @@ export class ArticleStoreService {
     );
   }
 
+  GetArticleAndProfile(slug: string) {
+    this.api
+      .GetArticleBySlug(slug)
+      .pipe(
+        switchMap((articleData) => {
+          this.CurrentArticle = articleData.article;
+          let username: string = articleData.article.author.username;
+          return this.api.GetProfile(username);
+        }),
+        tap((author) => {
+          this.CurrentArticle
+            ? (this.CurrentArticleAndProfile = {
+                author: author.profile,
+                currentArticle: this.CurrentArticle,
+              })
+            : '';
+          this.CurrentArticleAndProfile
+            ? this.CurrentArticleAndProfileUpdate.next({
+                ...this.CurrentArticleAndProfile,
+              })
+            : '';
+        })
+      )
+      .subscribe();
+  }
+
   CreateArticle(newArticle: ArticlesModel.NewArticle) {
     this.api.PostCreateArticle(newArticle).subscribe(
       (articleData) => {
@@ -76,6 +110,7 @@ export class ArticleStoreService {
     this.api.DeleteArticle(slug).subscribe(
       () => {
         alert('Delete article successfully!!!');
+        this.router.navigateByUrl('/');
       },
       (err) => console.log(err)
     );
@@ -108,6 +143,34 @@ export class ArticleStoreService {
 
         this.CurrentArticleUpdate.next({ ...this.CurrentArticle });
         this.ArticlesListUpdate.next({ ...this.ArticlesList });
+      },
+      (err) => console.log(err)
+    );
+  }
+
+  FollowUserFromArticle(username: string) {
+    this.api.PostFollowUser(username).subscribe(
+      (profile) => {
+        if (this.CurrentArticleAndProfile) {
+          this.CurrentArticleAndProfile.author = profile.profile;
+          this.CurrentArticleAndProfileUpdate.next({
+            ...this.CurrentArticleAndProfile,
+          });
+        }
+      },
+      (err) => console.log(err)
+    );
+  }
+
+  UnFollowUserFromArticle(username: string) {
+    this.api.DeleteUnfollowUser(username).subscribe(
+      (profile) => {
+        if (this.CurrentArticleAndProfile) {
+          this.CurrentArticleAndProfile.author = profile.profile;
+          this.CurrentArticleAndProfileUpdate.next({
+            ...this.CurrentArticleAndProfile,
+          });
+        }
       },
       (err) => console.log(err)
     );
