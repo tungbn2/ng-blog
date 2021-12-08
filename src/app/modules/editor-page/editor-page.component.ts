@@ -1,16 +1,17 @@
 import { FormGroup, FormControl, Validators, FormArray } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ArticleStoreService } from 'src/app/services/store/article-store.service';
 import { switchMap, tap } from 'rxjs/operators';
 import { ArticlesModel } from 'src/app/models';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-editor-page',
   templateUrl: './editor-page.component.html',
   styleUrls: ['./editor-page.component.css'],
 })
-export class EditorPageComponent implements OnInit {
+export class EditorPageComponent implements OnInit, OnDestroy {
   formEditArticle = new FormGroup({
     title: new FormControl('', Validators.required),
     description: new FormControl('', Validators.required),
@@ -18,7 +19,11 @@ export class EditorPageComponent implements OnInit {
     tagList: new FormArray([]),
   });
 
+  tagListData: string[] = [];
+
   slug: string = '';
+
+  router$: Subscription | undefined;
 
   get tagList() {
     return this.formEditArticle.controls.tagList as FormArray;
@@ -30,7 +35,7 @@ export class EditorPageComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.route.params
+    this.router$ = this.route.params
       .pipe(
         switchMap((params) => {
           if (params['slug']) {
@@ -49,7 +54,7 @@ export class EditorPageComponent implements OnInit {
           };
 
           this.formEditArticle.patchValue(editArticleData);
-
+          this.tagListData = currentArticle.tagList.slice();
           currentArticle.tagList.forEach((tagItem) => {
             this.addTag(tagItem);
           });
@@ -58,9 +63,18 @@ export class EditorPageComponent implements OnInit {
       .subscribe();
   }
 
+  ngOnDestroy() {
+    this.router$ ? this.router$.unsubscribe() : '';
+  }
+
   addTag(tagName: string) {
     this.tagList.controls.push(new FormControl(tagName));
-    console.log(this.tagList);
+  }
+
+  onRemoveTagItem(index: number) {
+    console.log(index);
+    this.tagListData.splice(index, 1);
+    this.tagList.removeAt(index);
   }
 
   onSubmit(tagList: string) {
@@ -76,10 +90,10 @@ export class EditorPageComponent implements OnInit {
     };
     console.log(articleData);
 
-    if (this.slug) {
-      this.articleStore.UpdateArticle(articleData, this.slug);
-    } else {
-      this.articleStore.CreateArticle(articleData);
-    }
+    // if (this.slug) {
+    //   this.articleStore.UpdateArticle(articleData, this.slug);
+    // } else {
+    //   this.articleStore.CreateArticle(articleData);
+    // }
   }
 }

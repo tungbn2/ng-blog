@@ -145,7 +145,7 @@ export class ConnectApiService {
 
   GetCommentsFromArticle(slug: string) {
     return this.http.get<MultiComments>(
-      Api.BASE_URL + Api.EndpointsCommnent(slug).GetCommentsFromArticle, this.ApiHeaderWithToken
+      Api.BASE_URL + Api.EndpointsCommnent(slug).GetCommentsFromArticle
     );
   }
 
