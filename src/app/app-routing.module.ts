@@ -1,19 +1,11 @@
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from './guards/auth-guard';
 
 import { LoginComponent } from './modules/auth-page/login/login.component';
 import { RegisterComponent } from './modules/auth-page/register/register.component';
 
 const routes: Routes = [
-  {
-    path: '',
-    pathMatch: 'full',
-    loadChildren: () =>
-      import('./modules/home-page/home-page.module').then(
-        (m) => m.HomePageModule
-      ),
-  },
   {
     path: 'login',
     component: LoginComponent,
@@ -49,10 +41,20 @@ const routes: Routes = [
         (m) => m.ProfilePageModule
       ),
   },
+  {
+    path: '',
+    pathMatch: 'full',
+    loadChildren: () =>
+      import('./modules/home-page/home-page.module').then(
+        (m) => m.HomePageModule
+      ),
+  },
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [
+    RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules }),
+  ],
   exports: [RouterModule],
 })
 export class AppRoutingModule {}

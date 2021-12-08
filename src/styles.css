@@ -11,13 +11,13 @@ body {
   font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
 }
 
-/* body {
-  background: url("https://pdp.edu.vn/wp-content/uploads/2021/04/hinh-nen-powerpoint-dep-nhat-2.jpg")
+body {
+  background: url("https://t1.daumcdn.net/cfile/blog/9978E5495DB33B1303")
     no-repeat;
   background-size: 100vw 100vh;
   background-position: center;
   background-attachment: fixed;
-} */
+}
 
 p {
   margin: 0;
@@ -25,5 +25,6 @@ p {
 }
 
 .form-control:hover {
+  cursor: pointer;
   box-shadow: 5px 5px 5px gainsboro;
 }
