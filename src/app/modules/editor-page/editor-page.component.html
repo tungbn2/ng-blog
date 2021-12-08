@@ -1,1 +1,49 @@
-<p>editor-page works!</p>
+<div class="edit-article">
+  <form [formGroup]="formEditArticle" (ngSubmit)="onSubmit(tagList.value)">
+    <div class="form-group">
+      <input
+        type="text"
+        class="form-control"
+        formControlName="title"
+        placeholder="Enter the title ..."
+      />
+    </div>
+
+    <div class="form-group">
+      <input
+        type="text"
+        class="form-control"
+        formControlName="description"
+        placeholder="Enter the description ..."
+      />
+    </div>
+
+    <div class="form-group">
+      <input
+        type="text"
+        class="form-control"
+        formControlName="body"
+        placeholder="Enter the body ..."
+      />
+    </div>
+
+    <div class="form-group">
+      <input
+        type="text"
+        class="form-control"
+        #tagList
+        placeholder="Enter the tagList ..."
+      />
+    </div>
+
+    <div class="form-button">
+      <button
+        class="btn btn-success"
+        type="submit"
+        [disabled]="formEditArticle.invalid"
+      >
+        Publish Article
+      </button>
+    </div>
+  </form>
+</div>

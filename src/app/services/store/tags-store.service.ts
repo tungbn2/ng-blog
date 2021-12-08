@@ -15,8 +15,6 @@ export class TagsStoreService {
   GetTags() {
     this.api.GetTags().subscribe(
       (ListOfTags) => {
-        console.log(ListOfTags);
-
         this.TagsList = ListOfTags.tags;
         this.TagsListData.next(this.TagsList.slice());
       },

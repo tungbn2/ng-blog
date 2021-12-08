@@ -1,0 +1,10 @@
+<div class="no-article" *ngIf="!articlesList">
+  <p>Ops...</p>
+</div>
+
+<div class="favorite-list">
+  <app-article-detail
+    *ngFor="let article of articlesList?.articles"
+    [article]="article"
+  ></app-article-detail>
+</div>

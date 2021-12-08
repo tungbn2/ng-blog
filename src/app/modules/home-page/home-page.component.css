@@ -1,0 +1,11 @@
+ul {
+  padding: 0;
+}
+
+.tag-link {
+  cursor: pointer;
+  list-style: none;
+  padding: 5px;
+  border: 1px solid grey;
+  border-radius: 10px;
+}

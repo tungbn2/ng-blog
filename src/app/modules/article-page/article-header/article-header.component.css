@@ -1,0 +1,11 @@
+.avatar-img {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+}
+
+.tag-name {
+  padding: 5px;
+  border: 1px solid grey;
+  border-radius: 10px;
+}

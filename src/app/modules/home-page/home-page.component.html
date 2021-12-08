@@ -1,25 +1,51 @@
-<div class="loading text-center mt-4">
-  <div class="spinner-grow text-primary" role="status">
-    <span class="visually-hidden">Loading...</span>
-  </div>
-  <div class="spinner-grow text-secondary" role="status">
-    <span class="visually-hidden">Loading...</span>
-  </div>
-  <div class="spinner-grow text-success" role="status">
-    <span class="visually-hidden">Loading...</span>
-  </div>
-  <div class="spinner-grow text-danger" role="status">
-    <span class="visually-hidden">Loading...</span>
-  </div>
-  <div class="spinner-grow text-warning" role="status">
-    <span class="visually-hidden">Loading...</span>
-  </div>
-  <div class="spinner-grow text-info" role="status">
-    <span class="visually-hidden">Loading...</span>
-  </div>
-</div>
-
 <div class="home-page">
-  <p>home-page works!</p>
-  <app-home-articles></app-home-articles>
+  <div class="row">
+    <div class="col-10">
+      <div class="home-header">
+        <button
+          class="btn btn-light"
+          (click)="onGotoFeed()"
+          *ngIf="currentUser"
+        >
+          Your Feed
+        </button>
+        <button
+          class="btn btn-light"
+          (click)="onGotoGlobal()"
+          [disabled]="!currentUser"
+        >
+          Global Feed
+        </button>
+      </div>
+      <div class="home-body">
+        <app-home-articles
+          [articleList]="articleList"
+          *ngIf="isLoaded"
+        ></app-home-articles>
+        <app-loading *ngIf="!isLoaded"></app-loading>
+        <div class="no-article" *ngIf="articleList.length == 0 && isLoaded">
+          <h3>Opss,... There is no article here</h3>
+          <a (click)="onGotoGlobal()" class="btn btn-outline-primary"
+            ><i class="fas fa-backward"></i> Back to Global Feed</a
+          >
+        </div>
+      </div>
+    </div>
+    <div class="col-2">
+      <div class="tag-list">
+        <h5>Popular Tags</h5>
+        <p *ngIf="tagList.length == 0">Ops...</p>
+        <ul *ngIf="!tagList.length">
+          <li
+            *ngFor="let tagItem of tagList"
+            (click)="onNavigateByTag(tagItem)"
+            class="tag-link"
+          >
+            {{ tagItem }}
+          </li>
+
+        </ul>
+      </div>
+    </div>
+  </div>
 </div>

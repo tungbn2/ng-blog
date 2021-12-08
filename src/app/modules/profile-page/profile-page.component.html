@@ -1,1 +1,28 @@
-<p>profile-page works!</p>
+<div class="profile-page">
+  <div class="profile-header">
+    <img [src]="profileData?.image" alt="" class="profile-avatar" />
+    <h3>{{ profileData?.username }}</h3>
+    <div class="profile-button">
+      <button class="btn btn-outline-primary">
+        {{ profileData?.following ? "Unfollow" : "Follow" }}
+        {{ profileData?.username }}
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="profile-articles">
+  <div class="profile-articles-button">
+    <a
+      class="btn btn-outline-primary"
+      [routerLink]="['/profile', profileData?.username]"
+      >My Articles</a
+    >
+    <a
+      class="btn btn-outline-primary"
+      [routerLink]="['/profile', profileData?.username, 'favorites']"
+      >Favorited Articles</a
+    >
+  </div>
+  <router-outlet></router-outlet>
+</div>

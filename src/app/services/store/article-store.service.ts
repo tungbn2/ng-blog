@@ -6,10 +6,6 @@ import { ArticlesModel, OtherModel, ProfileModel } from 'src/app/models';
 import { ConnectApiService } from '../connect-api/connect-api.service';
 import { switchMap, tap } from 'rxjs/operators';
 
-export interface CurrentArticleAndProfile {
-  currentArticle: ArticlesModel.Article;
-  author: ProfileModel.ProfileData;
-}
 @Injectable({
   providedIn: 'root',
 })
@@ -19,11 +15,13 @@ export class ArticleStoreService {
     articlesCount: 0,
   };
   private CurrentArticle: ArticlesModel.Article | null = null;
-  private CurrentArticleAndProfile: CurrentArticleAndProfile | null = null;
+  private CurrentArticleAndProfile: ArticlesModel.CurrentArticleAndProfile | null =
+    null;
 
   ArticlesListUpdate = new Subject<ArticlesModel.MultiArticles>();
   CurrentArticleUpdate = new Subject<ArticlesModel.Article>();
-  CurrentArticleAndProfileUpdate = new Subject<CurrentArticleAndProfile>();
+  CurrentArticleAndProfileUpdate =
+    new Subject<ArticlesModel.CurrentArticleAndProfile>();
 
   constructor(private api: ConnectApiService, private router: Router) {}
 
@@ -85,22 +83,27 @@ export class ArticleStoreService {
       .subscribe();
   }
 
-  CreateArticle(newArticle: ArticlesModel.NewArticle) {
+  CreateArticle(newArticleData: ArticlesModel.ArticleData) {
+    let newArticle: ArticlesModel.NewArticle = { article: newArticleData };
     this.api.PostCreateArticle(newArticle).subscribe(
       (articleData) => {
         this.ArticlesList.articles.unshift(articleData.article);
         this.ArticlesListUpdate.next({ ...this.ArticlesList });
+        alert('Create Article Successfully!');
       },
       (err) => console.log(err)
     );
   }
 
-  UpdateArticle(updateArticle: ArticlesModel.UpdateArticle, slug: string) {
+  UpdateArticle(updateArticleData: ArticlesModel.ArticleData, slug: string) {
+    let updateArticle: ArticlesModel.UpdateArticle = {
+      article: updateArticleData,
+    };
     this.api.PutUpdateArticle(updateArticle, slug).subscribe(
       (articleData) => {
         this.CurrentArticle = articleData.article;
         this.CurrentArticleUpdate.next({ ...this.CurrentArticle });
-        console.log('Update Article Successfully!');
+        alert('Update Article Successfully!');
       },
       (err) => console.log(err)
     );
@@ -121,11 +124,18 @@ export class ArticleStoreService {
       (favoriteArticle) => {
         this.CurrentArticle = favoriteArticle.article;
         this.ArticlesList.articles.forEach((item) => {
-          if (item.slug == favoriteArticle.article.slug)
-            item = { ...favoriteArticle.article };
+          if (item.slug == favoriteArticle.article.slug) {
+            item.favorited = favoriteArticle.article.favorited;
+            item.favoritesCount = favoriteArticle.article.favoritesCount;
+          }
         });
 
         this.CurrentArticleUpdate.next({ ...this.CurrentArticle });
+        if (this.CurrentArticleAndProfile)
+          this.CurrentArticleAndProfileUpdate.next({
+            ...this.CurrentArticleAndProfile,
+            currentArticle: this.CurrentArticle,
+          });
         this.ArticlesListUpdate.next({ ...this.ArticlesList });
       },
       (err) => console.log(err)
@@ -137,11 +147,18 @@ export class ArticleStoreService {
       (unfavoriteArticle) => {
         this.CurrentArticle = unfavoriteArticle.article;
         this.ArticlesList.articles.forEach((item) => {
-          if (item.slug == unfavoriteArticle.article.slug)
-            item = { ...unfavoriteArticle.article };
+          if (item.slug == unfavoriteArticle.article.slug) {
+            item.favorited = unfavoriteArticle.article.favorited;
+            item.favoritesCount = unfavoriteArticle.article.favoritesCount;
+          }
         });
 
         this.CurrentArticleUpdate.next({ ...this.CurrentArticle });
+        if (this.CurrentArticleAndProfile)
+          this.CurrentArticleAndProfileUpdate.next({
+            ...this.CurrentArticleAndProfile,
+            currentArticle: this.CurrentArticle,
+          });
         this.ArticlesListUpdate.next({ ...this.ArticlesList });
       },
       (err) => console.log(err)

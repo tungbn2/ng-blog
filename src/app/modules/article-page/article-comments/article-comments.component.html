@@ -1,0 +1,27 @@
+<div class="spinner-border text-primary" role="status" *ngIf="!isLoaded">
+  <span class="visually-hidden">Loading...</span>
+</div>
+<div class="comment-article" *ngIf="isLoaded">
+  <div class="form-group">
+    <textarea
+      name="comment"
+      class="form-control"
+      [(ngModel)]="commentInput"
+      placeholder="Enter your omment ..."
+      rows="3"
+    ></textarea>
+
+    <div class="group-button d-flex justify-content-between">
+      <img [src]="image" alt="" class="avatar" />
+      <button class="btn btn-success" (click)="onSubmitComment()">
+        <i class="fas fa-plus-circle"></i> Create Comment
+      </button>
+    </div>
+  </div>
+
+  <app-comment-detail
+    *ngFor="let comment of commentList"
+    [comment]="comment"
+    [isUser]="isUser"
+  ></app-comment-detail>
+</div>

@@ -84,7 +84,8 @@ export class AuthStoreService {
     );
   }
 
-  UpdateUser(updateUser: UpdateUser) {
+  UpdateUser(updateUserData: UserModel.UpdateUserData) {
+    let updateUser: UserModel.UpdateUser = { user: updateUserData };
     this.api.PutUpdateUser(updateUser).subscribe(
       (AuthUser) => {
         this.userData = AuthUser.user;

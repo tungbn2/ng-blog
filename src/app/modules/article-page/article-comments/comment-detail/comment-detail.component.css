@@ -1,0 +1,11 @@
+.comment-detail {
+  border: 1px solid grey;
+  padding: 1rem;
+  border-radius: 1rem;
+}
+
+.avatar {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+}

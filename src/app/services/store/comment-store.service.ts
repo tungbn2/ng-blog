@@ -12,7 +12,10 @@ export class CommentStoreService {
 
   constructor(private api: ConnectApiService) {}
 
-  AddCommentsToArticle(slug: string, newComment: ArticlesModel.NewComment) {
+  AddCommentsToArticle(slug: string, newCommentContent: string) {
+    let newComment: ArticlesModel.NewComment = {
+      comment: { body: newCommentContent },
+    };
     this.api.PostAddCommentsToArticle(slug, newComment).subscribe(
       (newComment) => {
         this.CommentList.push(newComment.comment);
@@ -25,6 +28,8 @@ export class CommentStoreService {
   GetCommentsFromArticle(slug: string) {
     this.api.GetCommentsFromArticle(slug).subscribe(
       (commentsData) => {
+        console.log(commentsData.comments[0]);
+
         this.CommentList = commentsData.comments.length
           ? commentsData.comments
           : [];

@@ -1,1 +1,14 @@
-<p>article-page works!</p>
+<div class="spinner-border text-primary" role="status" *ngIf="!isLoaded">
+  <span class="visually-hidden">Loading...</span>
+</div>
+
+<div class="article-page" *ngIf="isLoaded">
+  <app-article-header
+    [articleData]="articleData"
+    [isUser]="currentUser?.username == articleData?.author?.username"
+  ></app-article-header>
+  <app-article-comments
+    [isUser]="currentUser?.username == articleData?.author?.username"
+    [image]="currentUser ? currentUser.image : ''"
+  ></app-article-comments>
+</div>

@@ -1,0 +1,47 @@
+<div class="article-detail">
+  <div class="article-header">
+    <h2>{{ articleData?.currentArticle?.title }}</h2>
+    <div class="author-detail d-flex">
+      <img [src]="articleData?.author?.image" alt="" class="avatar-img" />
+
+      <div class="author-name">
+        <a class="nav-link">{{ articleData?.author?.username }}</a>
+        <p>{{ articleData?.currentArticle?.createdAt | date: "longDate" }}</p>
+      </div>
+
+      <div class="follow-group" *ngIf="!isUser">
+        <button class="btn btn-outline-primary" (click)="onClickButtonFollow()">
+          {{ articleData?.author?.following ? "Unfollow " : "Follow" }}
+          {{ articleData?.author?.username }}
+        </button>
+
+        <button class="btn btn-success" (click)="onClickFavorite()">
+          {{
+            articleData?.currentArticle?.favorited ? "Unfavorited" : "Favorite"
+          }}
+          Article {{ articleData?.currentArticle?.favoritesCount }}
+        </button>
+      </div>
+
+      <div class="auth-group" *ngIf="isUser">
+        <button class="btn btn-outline-primary" (click)="OnNavigate()">
+          <i class="fas fa-pen-nib"></i> Edit Article
+        </button>
+
+        <button class="btn btn-danger" (click)="onDeleteArticle()">
+          <i class="far fa-trash-alt"></i> Delete Article
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="article-body">
+    <p>{{ articleData?.currentArticle?.description }}</p>
+    <span
+      *ngFor="let item of articleData?.currentArticle?.tagList"
+      class="tag-name"
+    >
+      {{ item }}</span
+    >
+  </div>
+</div>

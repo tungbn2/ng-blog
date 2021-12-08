@@ -18,3 +18,8 @@ body {
   background-position: center;
   background-attachment: fixed;
 } */
+
+p {
+  margin: 0;
+  padding: 0;
+}

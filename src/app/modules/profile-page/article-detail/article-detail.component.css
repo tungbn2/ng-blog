@@ -1,0 +1,25 @@
+.article {
+  border: 1px solid gray;
+  border-radius: 10px;
+  padding: 10px;
+}
+
+.article-header-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+
+p {
+  margin: 0;
+}
+
+.nav-link {
+  padding: 0;
+}
+
+.tag-item {
+  padding: 5px;
+  border: 1px solid grey;
+  border-radius: 10px;
+}

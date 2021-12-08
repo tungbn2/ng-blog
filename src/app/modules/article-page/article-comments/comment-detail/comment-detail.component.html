@@ -1,0 +1,18 @@
+<div class="comment-detail mb-2">
+  <div class="comment-body">
+    <p>{{ comment.body }}</p>
+  </div>
+  <div class="comment-panel d-flex justify-content-between">
+    <div class="comment-author d-flex align-items-center">
+      <img [src]="comment.author.image" alt="" class="avatar me-2" />
+      <p>
+        comment by {{ comment.author.username }} at
+        {{ comment.createdAt | date: "longDate" }}
+      </p>
+    </div>
+
+    <button class="btn btn-success" *ngIf="isUser">
+      <i class="far fa-trash-alt"></i>
+    </button>
+  </div>
+</div>

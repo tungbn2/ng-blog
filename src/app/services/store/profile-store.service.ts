@@ -19,12 +19,19 @@ export class ProfileStoreService {
     articlesFavorite: [],
   };
 
-  ProfileData = new BehaviorSubject<ProfileModel.ProfileData | null>(null);
+  ProfileUpdate = new Subject<ProfileModel.ProfileData>();
   ProfileWithArticleUpdate = new Subject<ProfileWithArticle>();
 
   constructor(private api: ConnectApiService) {}
 
   GetProfile(username: string) {
+    this.api.GetProfile(username).subscribe((profileData) => {
+      this.profile = profileData.profile;
+      this.ProfileUpdate.next({ ...this.profile });
+    });
+  }
+
+  GetFullProfile(username: string) {
     this.api
       .GetProfile(username)
       .pipe(
@@ -58,7 +65,7 @@ export class ProfileStoreService {
     this.api.PostFollowUser(username).subscribe(
       (profile) => {
         this.profile = profile.profile;
-        this.ProfileData.next({ ...this.profile });
+        this.ProfileUpdate.next({ ...this.profile });
       },
       (err) => console.log(err)
     );
@@ -68,7 +75,7 @@ export class ProfileStoreService {
     this.api.DeleteUnfollowUser(username).subscribe(
       (profile) => {
         this.profile = profile.profile;
-        this.ProfileData.next({ ...this.profile });
+        this.ProfileUpdate.next({ ...this.profile });
       },
       (err) => console.log(err)
     );
