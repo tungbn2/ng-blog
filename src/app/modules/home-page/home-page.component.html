@@ -1,22 +1,27 @@
 <div class="home-page">
   <div class="row">
-    <div class="col-10">
+    <div class="col-9">
       <div class="home-header">
         <button
-          class="btn btn-light"
+          class="btn btn-custom"
+          [ngClass]="{ active: status == 'feed' }"
           (click)="onGotoFeed()"
           *ngIf="currentUser"
         >
           Your Feed
         </button>
         <button
-          class="btn btn-light"
+          class="btn btn-custom"
+          [ngClass]="{ active: status == 'global' }"
           (click)="onGotoGlobal()"
           [disabled]="!currentUser"
         >
           Global Feed
         </button>
       </div>
+
+      <hr />
+
       <div class="home-body">
         <app-home-articles
           [articleList]="articleList"
@@ -31,9 +36,9 @@
         </div>
       </div>
     </div>
-    <div class="col-2">
+    <div class="col-3">
       <div class="tag-list">
-        <h5>Popular Tags</h5>
+        <p class="fs-4  fw-bolder">Popular Tags</p>
         <p *ngIf="tagList.length == 0">Ops... There is no tag here</p>
         <ul *ngIf="!tagList.length">
           <li

@@ -23,3 +23,7 @@ p {
   margin: 0;
   padding: 0;
 }
+
+.form-control:hover {
+  box-shadow: 5px 5px 5px gainsboro;
+}

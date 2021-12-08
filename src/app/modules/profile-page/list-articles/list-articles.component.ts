@@ -11,6 +11,7 @@ import { ArticlesModel } from 'src/app/models';
 })
 export class ListArticlesComponent implements OnInit {
   articlesList: ArticlesModel.MultiArticles | undefined;
+  isLoaded: boolean = false;
   constructor(
     private route: ActivatedRoute,
     private articleStore: ArticleStoreService
@@ -28,6 +29,7 @@ export class ListArticlesComponent implements OnInit {
         }),
         tap((articlesListData) => {
           this.articlesList = articlesListData;
+          this.isLoaded = true;
         })
       )
       .subscribe();

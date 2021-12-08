@@ -18,6 +18,12 @@ export class ArticleDetailComponent implements OnInit {
   ngOnInit(): void {}
 
   onFavorite(slug: string, favorite: boolean) {
+    let user = localStorage.getItem('userBlogData');
+    if (!user) {
+      this.router.navigateByUrl('/login');
+      return;
+    }
+
     if (favorite) {
       this.articleStore.UnfavoriteArticle(slug);
     } else {

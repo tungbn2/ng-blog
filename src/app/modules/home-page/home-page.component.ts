@@ -15,6 +15,7 @@ export class HomePageComponent implements OnInit, OnDestroy {
   totalArticles: number = 0;
   tagList: string[] = [];
   currentUser: UserModel.User | null = null;
+  status: 'feed' | 'global' = 'global';
 
   ArticlesList$: Subscription | undefined;
   tagList$: Subscription | undefined;
@@ -56,11 +57,13 @@ export class HomePageComponent implements OnInit, OnDestroy {
   }
 
   onGotoFeed() {
+    this.status = 'feed'
     this.isLoaded = false;
     this.articleStore.GetFeedArticles();
   }
 
   onGotoGlobal() {
+    this.status = 'global'
     this.isLoaded = false;
     this.articleStore.GetListArticles({});
   }
