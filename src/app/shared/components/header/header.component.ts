@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit } from '@angular/core';
 import { UserModel } from 'src/app/models';
 import { AuthStoreService } from 'src/app/services/store/auth-store.service';
 
@@ -16,6 +16,10 @@ export class HeaderComponent implements OnInit {
     this.auth.currentUser.subscribe((currentUser) => {
       this.userData = currentUser;
     });
+  }
+
+  changeSource(event: any) {
+    event.target.src = 'https://api.realworld.io/images/smiley-cyrus.jpeg';
   }
 
   onLogout() {

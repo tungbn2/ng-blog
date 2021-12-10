@@ -12,7 +12,11 @@ import { ArticleStoreService } from 'src/app/services/store/article-store.servic
 })
 export class FavoriteArticlesComponent implements OnInit, OnDestroy {
   articlesList: ArticlesModel.MultiArticles | undefined;
+  username: string = '';
   isLoaded: boolean = false;
+
+  currentPage: number = 1;
+  pageList: number[] = [];
 
   route$: Subscription | undefined;
 
@@ -26,14 +30,20 @@ export class FavoriteArticlesComponent implements OnInit, OnDestroy {
       .pipe(
         switchMap((params) => {
           if (params['username']) {
-            let username = params['username'];
-            this.articleStore.GetListArticles({ favorited: username });
+            this.username = params['username'];
+            this.articleStore.GetListArticles({ favorited: this.username });
           }
           return this.articleStore.ArticlesListUpdate;
         }),
         tap((articlesListData) => {
           this.articlesList = articlesListData;
           this.isLoaded = true;
+
+          this.pageList = [];
+          let total = Math.ceil(articlesListData.articlesCount / 20);
+          for (let i = 1; i <= total; i++) {
+            this.pageList.push(i);
+          }
         })
       )
       .subscribe();
@@ -41,5 +51,15 @@ export class FavoriteArticlesComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.route$ ? this.route$.unsubscribe() : '';
+  }
+
+  onNextPage() {
+    this.currentPage++;
+    this.articleStore.GetListArticles({ offset: (this.currentPage - 1) * 20 });
+  }
+
+  onPrevPage() {
+    this.currentPage--;
+    this.articleStore.GetListArticles({ offset: (this.currentPage - 1) * 20 });
   }
 }

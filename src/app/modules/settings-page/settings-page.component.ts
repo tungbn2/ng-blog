@@ -31,21 +31,27 @@ export class SettingsPageComponent implements OnInit {
   }
 
   onSubmit() {
-    let updateUser: any = {};
-    Object.entries(this.settingForm.value).forEach(([key, value]) => {
-      let valueData = value ? (value as string) : '';
+    let confirmMsg = confirm('Do you want to submit form?');
 
-      if (valueData.trim() != '' && key != 'email') {
-        updateUser[key] = valueData;
-      }
-    });
+    if (confirmMsg) {
+      let updateUser: any = {};
+      Object.entries(this.settingForm.value).forEach(([key, value]) => {
+        let valueData = value ? (value as string) : '';
 
-    console.log(updateUser);
+        if (valueData.trim() != '' && key != 'email') {
+          updateUser[key] = valueData;
+        }
+      });
 
-    this.auth.UpdateUser(updateUser);
+      this.auth.UpdateUser(updateUser);
+    }
   }
 
   onLogout() {
-    this.auth.Logout();
+    let confirmMsg = confirm('Do you want to logout?');
+
+    if (confirmMsg) {
+      this.auth.Logout();
+    }
   }
 }

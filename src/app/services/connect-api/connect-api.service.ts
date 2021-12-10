@@ -26,10 +26,12 @@ import { OtherModel } from 'src/app/models';
 })
 export class ConnectApiService {
   private get ApiHeaderWithToken() {
-    const token = JSON.parse(localStorage.getItem('userBlogData') || '')?.token;
+    const token: string = JSON.parse(
+      localStorage.getItem('userBlogData') || ''
+    )?.token;
     return {
       headers: new HttpHeaders({
-        authorization: 'Bearer ' + token,
+        authorization: token ? 'Bearer ' + token : '',
       }),
     };
   }
@@ -67,7 +69,8 @@ export class ConnectApiService {
 
   GetProfile(username: string) {
     return this.http.get<Profile>(
-      Api.BASE_URL + Api.EndpointsUser(username).GetProfile
+      Api.BASE_URL + Api.EndpointsUser(username).GetProfile,
+      this.ApiHeaderWithToken
     );
   }
 
@@ -91,10 +94,17 @@ export class ConnectApiService {
       fromObject: GetArticlesParams as any,
     });
 
+    const token: string = JSON.parse(
+      localStorage.getItem('userBlogData') || ''
+    )?.token;
+
     return this.http.get<MultiArticles>(
       Api.BASE_URL + Api.EndpointsArticles().ListArticles,
       {
         params,
+        headers: new HttpHeaders({
+          authorization: token ? 'Bearer ' + token : '',
+        }),
       }
     );
   }
@@ -145,7 +155,8 @@ export class ConnectApiService {
 
   GetCommentsFromArticle(slug: string) {
     return this.http.get<MultiComments>(
-      Api.BASE_URL + Api.EndpointsCommnent(slug).GetCommentsFromArticle
+      Api.BASE_URL + Api.EndpointsCommnent(slug).GetCommentsFromArticle,
+      this.ApiHeaderWithToken
     );
   }
 

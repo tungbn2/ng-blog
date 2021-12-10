@@ -4,7 +4,7 @@
     <div class="author-detail row">
       <div class="author-info col-md-5 d-flex align-items-center">
         <div class="image me-4">
-          <img [src]="articleData?.author?.image" alt="" class="avatar-img" />
+          <img [src]="articleData?.author?.image" alt="" class="avatar-img" (error) ="changeSource($event)"/>
         </div>
 
         <div class="author-name">

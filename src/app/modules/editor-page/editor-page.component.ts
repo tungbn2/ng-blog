@@ -76,21 +76,25 @@ export class EditorPageComponent implements OnInit, OnDestroy {
   }
 
   onSubmit(tagList: string) {
-    tagList.split(',').forEach((tagName) => {
-      if (tagName) this.addTag(tagName);
-    });
+    let confirmMsg = confirm('Do you want to submit form?');
 
-    let tagListValue = this.tagList.controls.map((item) => item.value);
+    if (confirmMsg) {
+      tagList.split(',').forEach((tagName) => {
+        if (tagName) this.addTag(tagName);
+      });
 
-    let articleData: ArticlesModel.ArticleData = {
-      ...this.formEditArticle.value,
-      tagList: tagListValue,
-    };
+      let tagListValue = this.tagList.controls.map((item) => item.value);
 
-    if (this.slug) {
-      this.articleStore.UpdateArticle(articleData, this.slug);
-    } else {
-      this.articleStore.CreateArticle(articleData);
+      let articleData: ArticlesModel.ArticleData = {
+        ...this.formEditArticle.value,
+        tagList: tagListValue,
+      };
+
+      if (this.slug) {
+        this.articleStore.UpdateArticle(articleData, this.slug);
+      } else {
+        this.articleStore.CreateArticle(articleData);
+      }
     }
   }
 }

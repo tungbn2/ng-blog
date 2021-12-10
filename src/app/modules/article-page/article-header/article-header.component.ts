@@ -16,14 +16,23 @@ export class ArticleHeaderComponent implements OnInit {
 
   ngOnInit(): void {}
 
+  changeSource(event: any) {
+    event.target.src =
+      'https://api.realworld.io/images/smiley-cyrus.jpeg';
+  }
+
   OnNavigate() {
     let slug = this.articleData ? this.articleData.currentArticle.slug : '';
     this.router.navigate(['/editor', slug]);
   }
 
   onDeleteArticle() {
-    let slug = this.articleData ? this.articleData.currentArticle.slug : '';
-    this.article.DeleteArticle(slug);
+    let confirmMsg = confirm('Do you want to delete this article?');
+
+    if (confirmMsg) {
+      let slug = this.articleData ? this.articleData.currentArticle.slug : '';
+      this.article.DeleteArticle(slug);
+    }
   }
 
   onClickButtonFollow() {

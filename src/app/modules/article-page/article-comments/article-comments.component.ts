@@ -52,6 +52,10 @@ export class ArticleCommentsComponent implements OnInit, OnDestroy {
       .subscribe();
   }
 
+  changeSource(event: any) {
+    event.target.src = 'https://api.realworld.io/images/smiley-cyrus.jpeg';
+  }
+
   ngOnDestroy() {
     this.route$ ? this.route$.unsubscribe() : '';
     this.user$ ? this.user$.unsubscribe() : '';

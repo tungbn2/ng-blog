@@ -10,7 +10,11 @@
 
     <div class="group-button d-flex justify-content-between">
       <a [routerLink]="['/profile', currentUser.username]"
-        ><img [src]="currentUser.image" alt="" class="avatar"
+        ><img
+          [src]="currentUser.image"
+          alt=""
+          class="avatar"
+          (error)="changeSource($event)"
       /></a>
       <button
         class="btn btn-success"

@@ -15,7 +15,10 @@ export class HomePageComponent implements OnInit, OnDestroy {
   totalArticles: number = 0;
   tagList: string[] = [];
   currentUser: UserModel.User | null = null;
+
   status: 'feed' | 'global' | 'tag' = 'global';
+  pageList: number[] = [];
+  currentPage: number = 1;
 
   ArticlesList$: Subscription | undefined;
   tagList$: Subscription | undefined;
@@ -46,6 +49,12 @@ export class HomePageComponent implements OnInit, OnDestroy {
         this.isLoaded = true;
         this.articleList = articlesData.articles;
         this.totalArticles = articlesData.articlesCount;
+
+        this.pageList = [];
+        let maxpage = Math.ceil(this.totalArticles / 20);
+        for (let i = 1; i <= maxpage; i++) {
+          this.pageList.push(i);
+        }
       }
     );
   }
@@ -54,6 +63,16 @@ export class HomePageComponent implements OnInit, OnDestroy {
     this.tagList$ ? this.tagList$.unsubscribe() : '';
     this.ArticlesList$ ? this.ArticlesList$.unsubscribe() : '';
     this.user$ ? this.user$.unsubscribe : '';
+  }
+
+  onNextPage() {
+    this.currentPage++;
+    this.articleStore.GetListArticles({ offset: (this.currentPage - 1) * 20 });
+  }
+
+  onPrevPage() {
+    this.currentPage--;
+    this.articleStore.GetListArticles({ offset: (this.currentPage - 1) * 20 });
   }
 
   onGotoFeed() {

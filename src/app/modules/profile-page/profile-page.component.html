@@ -1,7 +1,7 @@
 <div class="profile-page mt-3">
   <!-- header -->
   <div class="profile-header text-center">
-    <img [src]="profileData?.image" alt="" class="profile-avatar mt-2" />
+    <img [src]="profileData?.image" alt="" class="profile-avatar mt-2"  (error) ="changeSource($event)" />
     <h3 class="fw-bold mt-2">{{ profileData?.username }}</h3>
     <div class="profile-button mt-2">
       <button
@@ -25,54 +25,7 @@
 
   <!-- body -->
   <div class="profile-articles mt-4">
-    <div class="profile-articles-button row">
-      <div class="col-md-8">
-        <a
-          class="btn btn-tab"
-          [routerLink]="['/profile', profileData?.username]"
-          routerLinkActive="active"
-          >My Articles</a
-        >
-        <a
-          class="btn btn-tab"
-          [routerLink]="['/profile', profileData?.username, 'favorites']"
-          routerLinkActive="active"
-          >Favorited Articles</a
-        >
-      </div>
-
-      <div
-        class="
-          pagination
-          col-md-4
-          p-0
-          m-0
-          text-end
-          d-flex
-          justify-content-center
-        "
-      >
-        <nav aria-label="Page navigation example">
-          <ul class="pagination m-0">
-            <li class="page-item disabled">
-              <a class="page-link" aria-label="Previous">
-                <span aria-hidden="true">&laquo;</span>
-              </a>
-            </li>
-
-            <li class="page-item"><a class="page-link">1</a></li>
-
-            <li class="page-item disabled">
-              <a class="page-link" aria-label="Next">
-                <span aria-hidden="true">&raquo;</span>
-              </a>
-            </li>
-          </ul>
-        </nav>
-      </div>
-    </div>
-
-    <hr style="margin-top: 0" />
+    
 
     <div class="article-list-detail mt-2">
       <router-outlet></router-outlet>

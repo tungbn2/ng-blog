@@ -36,7 +36,7 @@ export class AuthStoreService {
           'timeToLogin',
           JSON.stringify(new Date().toISOString())
         );
-        this.autoLogout();
+        // this.autoLogout();
         alert('Login success!');
         this.router.navigate(['/']);
       },
@@ -57,7 +57,7 @@ export class AuthStoreService {
 
       this.userData = user;
       this.currentUser.next(user);
-      this.autoLogout();
+      // this.autoLogout();
     } else {
       this.currentUser.next(null);
     }
@@ -86,7 +86,7 @@ export class AuthStoreService {
         `%cAttention: You have ${
           timeToLogout.getMinutes() - now.getMinutes()
         } minutes until to logout !!!`,
-        'color:red;font-family:serif; font-size: 30px'
+        'color:red;font-family:serif; font-size: 25px'
       );
 
       let autoLogout = setTimeout(() => {

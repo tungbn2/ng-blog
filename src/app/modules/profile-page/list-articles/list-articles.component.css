@@ -1,0 +1,18 @@
+.btn-tab {
+  color: rgb(13, 110, 253);
+  font-size: 1.1rem;
+}
+
+.btn-tab:hover {
+  border-bottom: 2px solid rgb(13, 110, 253);
+  font-weight: bold;
+}
+
+.active {
+  border-bottom: 1px solid rgb(13, 110, 253);
+  font-weight: bolder;
+}
+
+.page-link {
+  border: 0px;
+}

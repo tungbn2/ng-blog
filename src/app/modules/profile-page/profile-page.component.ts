@@ -50,6 +50,10 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
     this.user$ ? this.user$.unsubscribe() : '';
   }
 
+  changeSource(event: any) {
+    event.target.src = 'https://api.realworld.io/images/smiley-cyrus.jpeg';
+  }
+
   onFollowUser() {
     let user = localStorage.getItem('userBlogData');
 
