@@ -1,5 +1,7 @@
+import { ActivatedRoute } from '@angular/router';
 import { Component, Input, OnInit } from '@angular/core';
 import { ArticlesModel } from 'src/app/models';
+import { CommentStoreService } from 'src/app/services/store/comment-store.service';
 
 @Component({
   selector: 'app-comment-detail',
@@ -8,9 +10,21 @@ import { ArticlesModel } from 'src/app/models';
 })
 export class CommentDetailComponent implements OnInit {
   @Input() comment!: ArticlesModel.Comment;
-  @Input() isUser: boolean = false
+  @Input() isUser: boolean = false;
 
-  constructor() {}
+  slug: string = '';
 
-  ngOnInit(): void {}
+  constructor(
+    private commentStore: CommentStoreService,
+    private route: ActivatedRoute
+  ) {
+    this.slug = this.route.snapshot.params['slug'];
+  }
+
+  ngOnInit(): void {
+  }
+
+  onDeleteComment() {
+    this.commentStore.DeleteComment(this.slug, this.comment.id);
+  }
 }

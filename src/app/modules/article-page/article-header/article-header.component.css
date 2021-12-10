@@ -34,3 +34,13 @@ h3 {
   border: 1px solid grey;
   border-radius: 1rem;
 }
+
+.btn {
+  width: 200px;
+}
+
+@media only screen and (max-width: 768px) {
+  .btn {
+    margin-top: 8px;
+  }
+}

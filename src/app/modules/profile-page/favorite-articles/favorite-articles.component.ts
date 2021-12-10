@@ -32,8 +32,6 @@ export class FavoriteArticlesComponent implements OnInit, OnDestroy {
           return this.articleStore.ArticlesListUpdate;
         }),
         tap((articlesListData) => {
-          console.log(articlesListData);
-
           this.articlesList = articlesListData;
           this.isLoaded = true;
         })

@@ -45,8 +45,6 @@ export class EditorPageComponent implements OnInit, OnDestroy {
           return this.articleStore.CurrentArticleUpdate;
         }),
         tap((currentArticle) => {
-          console.log(currentArticle);
-
           let editArticleData = {
             title: currentArticle.title,
             description: currentArticle.description,
@@ -54,6 +52,7 @@ export class EditorPageComponent implements OnInit, OnDestroy {
           };
 
           this.formEditArticle.patchValue(editArticleData);
+
           this.tagListData = currentArticle.tagList.slice();
           currentArticle.tagList.forEach((tagItem) => {
             this.addTag(tagItem);
@@ -72,7 +71,6 @@ export class EditorPageComponent implements OnInit, OnDestroy {
   }
 
   onRemoveTagItem(index: number) {
-    console.log(index);
     this.tagListData.splice(index, 1);
     this.tagList.removeAt(index);
   }
@@ -88,12 +86,11 @@ export class EditorPageComponent implements OnInit, OnDestroy {
       ...this.formEditArticle.value,
       tagList: tagListValue,
     };
-    console.log(articleData);
 
-    // if (this.slug) {
-    //   this.articleStore.UpdateArticle(articleData, this.slug);
-    // } else {
-    //   this.articleStore.CreateArticle(articleData);
-    // }
+    if (this.slug) {
+      this.articleStore.UpdateArticle(articleData, this.slug);
+    } else {
+      this.articleStore.CreateArticle(articleData);
+    }
   }
 }

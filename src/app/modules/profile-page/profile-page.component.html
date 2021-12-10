@@ -1,4 +1,4 @@
-<div class="profile-page">
+<div class="profile-page mt-3">
   <!-- header -->
   <div class="profile-header text-center">
     <img [src]="profileData?.image" alt="" class="profile-avatar mt-2" />
@@ -7,7 +7,7 @@
       <button
         class="btn btn-outline-primary fw-bold"
         (click)="onFollowUser()"
-        *ngIf="profileData?.username != currentUser?.username || !currentUser"
+        *ngIf="profileData?.username != currentUser?.username && currentUser"
       >
         <i class="fas fa-user-plus"></i>
         {{ profileData?.following ? "Unfollow" : "Follow" }}
@@ -17,7 +17,7 @@
       <a
         routerLink="/settings"
         class="btn btn-outline-primary fw-bold"
-        *ngIf="profileData?.username == currentUser?.username || !currentUser"
+        *ngIf="profileData?.username == currentUser?.username && currentUser"
         ><i class="fas fa-cogs"></i> Go to Settings</a
       >
     </div>
@@ -25,19 +25,51 @@
 
   <!-- body -->
   <div class="profile-articles mt-4">
-    <div class="profile-articles-button">
-      <a
-        class="btn btn-tab"
-        [routerLink]="['/profile', profileData?.username]"
-        routerLinkActive="active"
-        >My Articles</a
+    <div class="profile-articles-button row">
+      <div class="col-md-8">
+        <a
+          class="btn btn-tab"
+          [routerLink]="['/profile', profileData?.username]"
+          routerLinkActive="active"
+          >My Articles</a
+        >
+        <a
+          class="btn btn-tab"
+          [routerLink]="['/profile', profileData?.username, 'favorites']"
+          routerLinkActive="active"
+          >Favorited Articles</a
+        >
+      </div>
+
+      <div
+        class="
+          pagination
+          col-md-4
+          p-0
+          m-0
+          text-end
+          d-flex
+          justify-content-center
+        "
       >
-      <a
-        class="btn btn-tab"
-        [routerLink]="['/profile', profileData?.username, 'favorites']"
-        routerLinkActive="active"
-        >Favorited Articles</a
-      >
+        <nav aria-label="Page navigation example">
+          <ul class="pagination m-0">
+            <li class="page-item disabled">
+              <a class="page-link" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+              </a>
+            </li>
+
+            <li class="page-item"><a class="page-link">1</a></li>
+
+            <li class="page-item disabled">
+              <a class="page-link" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </div>
     </div>
 
     <hr style="margin-top: 0" />

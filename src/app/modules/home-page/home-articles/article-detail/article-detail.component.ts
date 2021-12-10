@@ -1,6 +1,6 @@
 import { AuthStoreService } from 'src/app/services/store/auth-store.service';
 import { Router } from '@angular/router';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ArticlesModel, UserModel } from 'src/app/models';
 import { ArticleStoreService } from 'src/app/services/store/article-store.service';
 
@@ -11,6 +11,7 @@ import { ArticleStoreService } from 'src/app/services/store/article-store.servic
 })
 export class ArticleDetailComponent implements OnInit {
   @Input() article!: ArticlesModel.Article;
+  @Output() gotoTag = new EventEmitter <string>()
   disabled: boolean = false;
 
   constructor(
@@ -36,5 +37,9 @@ export class ArticleDetailComponent implements OnInit {
 
   onNavigate() {
     this.router.navigate(['/article', this.article.slug]);
+  }
+
+  onClick(item: string){
+    this.gotoTag.emit(item)
   }
 }

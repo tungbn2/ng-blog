@@ -5,6 +5,7 @@ import { Subject } from 'rxjs';
 import { ArticlesModel, OtherModel, ProfileModel } from 'src/app/models';
 import { ConnectApiService } from '../connect-api/connect-api.service';
 import { switchMap, tap } from 'rxjs/operators';
+import { HandleErrorService } from './handle-error.service';
 
 @Injectable({
   providedIn: 'root',
@@ -23,7 +24,11 @@ export class ArticleStoreService {
   CurrentArticleAndProfileUpdate =
     new Subject<ArticlesModel.CurrentArticleAndProfile>();
 
-  constructor(private api: ConnectApiService, private router: Router) {}
+  constructor(
+    private api: ConnectApiService,
+    private handleErr: HandleErrorService,
+    private router: Router
+  ) {}
 
   GetListArticles(params: OtherModel.getArticleParam) {
     this.api.GetListArticles(params).subscribe(
@@ -31,7 +36,7 @@ export class ArticleStoreService {
         this.ArticlesList = articlesData;
         this.ArticlesListUpdate.next({ ...this.ArticlesList });
       },
-      (err) => console.log(err)
+      (err) => this.handleErr.HandleError(err)
     );
   }
 
@@ -41,9 +46,7 @@ export class ArticleStoreService {
         this.ArticlesList = articlesData;
         this.ArticlesListUpdate.next({ ...this.ArticlesList });
       },
-      (err) => {
-        console.log(err);
-      }
+      (err) => this.handleErr.HandleError(err)
     );
   }
 
@@ -53,7 +56,7 @@ export class ArticleStoreService {
         this.CurrentArticle = articleData.article;
         this.CurrentArticleUpdate.next({ ...this.CurrentArticle });
       },
-      (err) => console.log(err)
+      (err) => this.handleErr.HandleError(err)
     );
   }
 
@@ -80,18 +83,20 @@ export class ArticleStoreService {
             : '';
         })
       )
-      .subscribe();
+      .subscribe(
+        () => {},
+        (err) => this.handleErr.HandleError(err)
+      );
   }
 
   CreateArticle(newArticleData: ArticlesModel.ArticleData) {
     let newArticle: ArticlesModel.NewArticle = { article: newArticleData };
     this.api.PostCreateArticle(newArticle).subscribe(
       (articleData) => {
-        this.ArticlesList.articles.unshift(articleData.article);
-        this.ArticlesListUpdate.next({ ...this.ArticlesList });
         alert('Create Article Successfully!');
+        this.router.navigate(['/article', articleData.article.slug]);
       },
-      (err) => console.log(err)
+      (err) => this.handleErr.HandleError(err)
     );
   }
 
@@ -104,8 +109,9 @@ export class ArticleStoreService {
         this.CurrentArticle = articleData.article;
         this.CurrentArticleUpdate.next({ ...this.CurrentArticle });
         alert('Update Article Successfully!');
+        this.router.navigate(['/article', slug]);
       },
-      (err) => console.log(err)
+      (err) => this.handleErr.HandleError(err)
     );
   }
 
@@ -115,7 +121,7 @@ export class ArticleStoreService {
         alert('Delete article successfully!!!');
         this.router.navigateByUrl('/');
       },
-      (err) => console.log(err)
+      (err) => this.handleErr.HandleError(err)
     );
   }
 
@@ -138,7 +144,7 @@ export class ArticleStoreService {
           });
         this.ArticlesListUpdate.next({ ...this.ArticlesList });
       },
-      (err) => console.log(err)
+      (err) => this.handleErr.HandleError(err)
     );
   }
 
@@ -161,7 +167,7 @@ export class ArticleStoreService {
           });
         this.ArticlesListUpdate.next({ ...this.ArticlesList });
       },
-      (err) => console.log(err)
+      (err) => this.handleErr.HandleError(err)
     );
   }
 
@@ -175,7 +181,7 @@ export class ArticleStoreService {
           });
         }
       },
-      (err) => console.log(err)
+      (err) => this.handleErr.HandleError(err)
     );
   }
 
@@ -189,7 +195,7 @@ export class ArticleStoreService {
           });
         }
       },
-      (err) => console.log(err)
+      (err) => this.handleErr.HandleError(err)
     );
   }
 }

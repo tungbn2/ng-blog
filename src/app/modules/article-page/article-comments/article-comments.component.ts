@@ -1,3 +1,4 @@
+import { FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { CommentStoreService } from './../../../services/store/comment-store.service';
 import { Component, Input, OnInit, OnDestroy } from '@angular/core';
@@ -15,9 +16,9 @@ export class ArticleCommentsComponent implements OnInit, OnDestroy {
   @Input() isUser: boolean = false;
 
   commentList: ArticlesModel.Comment[] = [];
-  commentInput: string = '';
+  commentInput = new FormControl('', Validators.required);
   slug: string = '';
-  isLoaded = false;
+  isLoaded: boolean = false;
   currentUser: UserModel.User | null = null;
 
   route$: Subscription | undefined;
@@ -43,7 +44,6 @@ export class ArticleCommentsComponent implements OnInit, OnDestroy {
         }),
         tap((commentData) => {
           this.commentList = commentData;
-          // this.isLoaded = true;
           setTimeout(() => {
             this.isLoaded = true;
           }, 500);
@@ -58,6 +58,7 @@ export class ArticleCommentsComponent implements OnInit, OnDestroy {
   }
 
   onSubmitComment() {
-    this.commentStore.AddCommentsToArticle(this.slug, this.commentInput);
+    this.commentStore.AddCommentsToArticle(this.slug, this.commentInput.value);
+    this.commentInput.setValue('');
   }
 }

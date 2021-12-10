@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { UserModel } from 'src/app/models';
 import { AuthStoreService } from 'src/app/services/store/auth-store.service';
 
 @Component({
@@ -9,14 +10,11 @@ import { AuthStoreService } from 'src/app/services/store/auth-store.service';
 })
 export class SettingsPageComponent implements OnInit {
   settingForm = new FormGroup({
-    image: new FormControl('', Validators.required),
+    image: new FormControl(''),
     username: new FormControl('', Validators.required),
     bio: new FormControl(''),
-    email: new FormControl(
-      '',
-      Validators.compose([Validators.required, Validators.email])
-    ),
-    password: new FormControl('', Validators.required),
+    email: new FormControl(''),
+    password: new FormControl(''),
   });
 
   constructor(private auth: AuthStoreService) {}
@@ -33,6 +31,21 @@ export class SettingsPageComponent implements OnInit {
   }
 
   onSubmit() {
-    this.auth.UpdateUser(this.settingForm.value);
+    let updateUser: any = {};
+    Object.entries(this.settingForm.value).forEach(([key, value]) => {
+      let valueData = value ? (value as string) : '';
+
+      if (valueData.trim() != '' && key != 'email') {
+        updateUser[key] = valueData;
+      }
+    });
+
+    console.log(updateUser);
+
+    this.auth.UpdateUser(updateUser);
+  }
+
+  onLogout() {
+    this.auth.Logout();
   }
 }

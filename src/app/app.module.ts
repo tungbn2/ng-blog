@@ -7,10 +7,16 @@ import { AllAppModule } from './modules/shared/app/all-app.module';
 import { HeaderComponent } from './shared/components/header/header.component';
 import { LoginComponent } from './modules/auth-page/login/login.component';
 import { RegisterComponent } from './modules/auth-page/register/register.component';
-
+import { NotFoundComponent } from './shared/components/not-found/not-found.component';
 
 @NgModule({
-  declarations: [AppComponent, HeaderComponent, LoginComponent, RegisterComponent, ],
+  declarations: [
+    AppComponent,
+    HeaderComponent,
+    LoginComponent,
+    RegisterComponent,
+    NotFoundComponent,
+  ],
   imports: [BrowserModule, AppRoutingModule, CoreModule, AllAppModule],
   providers: [],
   bootstrap: [AppComponent],

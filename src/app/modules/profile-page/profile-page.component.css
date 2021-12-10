@@ -22,4 +22,9 @@
 
 .active {
   border-bottom: 1px solid rgb(13, 110, 253);
+  font-weight: bolder;
+}
+
+.page-link {
+  border: 0px;
 }

@@ -4,6 +4,7 @@ import { AuthGuard } from './guards/auth-guard';
 
 import { LoginComponent } from './modules/auth-page/login/login.component';
 import { RegisterComponent } from './modules/auth-page/register/register.component';
+import { NotFoundComponent } from './shared/components/not-found/not-found.component';
 
 const routes: Routes = [
   {
@@ -42,13 +43,14 @@ const routes: Routes = [
       ),
   },
   {
-    path: '',
-    pathMatch: 'full',
+    path: 'home',
     loadChildren: () =>
       import('./modules/home-page/home-page.module').then(
         (m) => m.HomePageModule
       ),
   },
+  { path: '', pathMatch: 'full', redirectTo: '/home' },
+  { path: '**', component: NotFoundComponent },
 ];
 
 @NgModule({

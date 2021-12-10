@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ArticlesModel } from 'src/app/models';
 import { ArticleStoreService } from 'src/app/services/store/article-store.service';
 
@@ -9,8 +9,11 @@ import { ArticleStoreService } from 'src/app/services/store/article-store.servic
 })
 export class HomeArticlesComponent implements OnInit {
   @Input() articleList: ArticlesModel.Article[] = [];
+  @Output() gotoTag = new EventEmitter<string>();
 
   ngOnInit(): void {}
 
-
+  OnGotoTag(item: string) {
+    this.gotoTag.emit(item);
+  }
 }

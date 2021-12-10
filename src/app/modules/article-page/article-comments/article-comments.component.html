@@ -3,7 +3,7 @@
     <textarea
       name="comment"
       class="form-control mb-3"
-      [(ngModel)]="commentInput"
+      [formControl]="commentInput"
       placeholder="Enter your comment ..."
       rows="3"
     ></textarea>
@@ -12,7 +12,11 @@
       <a [routerLink]="['/profile', currentUser.username]"
         ><img [src]="currentUser.image" alt="" class="avatar"
       /></a>
-      <button class="btn btn-success" (click)="onSubmitComment()">
+      <button
+        class="btn btn-success"
+        (click)="onSubmitComment()"
+        [disabled]="commentInput.invalid"
+      >
         <i class="fas fa-plus-circle"></i> Create Comment
       </button>
     </div>
