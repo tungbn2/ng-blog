@@ -21,8 +21,6 @@ export class HomePageComponent implements OnInit {
   ngOnInit(): void {
     this.article.GetListArticles({});
     this.article.ArticlesListUpdate.subscribe((articlesData) => {
-      console.log(articlesData);
-
       this.articleList = articlesData.articles;
       this.totalArticles = articlesData.articlesCount;
     });
