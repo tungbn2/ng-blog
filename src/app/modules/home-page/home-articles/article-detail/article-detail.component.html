@@ -1,0 +1,103 @@
+<!-- <div class="article mb-2">
+  <div class="article-header d-flex justify-content-between">
+    <div class="left d-flex align-items-center">
+      <img
+        [src]="article.author.image"
+        alt="ava"
+        class="article-header-avatar me-2"
+      />
+      <div class="article-info">
+        <a
+          [routerLink]="['/profile', article.author.username]"
+          class="nav-link"
+          >{{ article.author.username }}</a
+        >
+        <p>{{ article.updatedAt | date: "longDate" }}</p>
+      </div>
+    </div>
+    <div class="favorite-btn">
+      <button
+        class="btn border-success"
+        [ngStyle]="{backgroundColor: article?.favorited ? 'green':'white'}"
+        (click)="onFavorite(article.slug)"
+      >
+        <i
+          class="fa-heart"
+          
+          [ngClass]="{
+            far: !article.favorited,
+            fas: article.favorited
+          }"
+        ></i>
+        {{ article.favoritesCount }}
+      </button>
+    </div>
+  </div>
+
+  <div class="article-body">
+    <h3>{{ article.title }}</h3>
+    <p>{{ article.body }}</p>
+  </div>
+
+  <div class="article-footer d-flex justify-content-between">
+    <button class="btn btn-success" (click)="onNavigate()">Read more</button>
+    <div class="tag-list">
+      <span *ngFor="let item of article.tagList" class="tag-item me-1">
+        #{{ item }}</span
+      >
+    </div>
+  </div>
+</div> -->
+
+<div class="single-post post1">
+  <div class="single-post-img">
+    <img [src]="article.author.image" alt="" class="img-article">
+  </div>
+  <div class="single-post-text">
+    <h3 class="text-center">{{ article.title }}</h3>
+    <div class="tag-list">
+      <span *ngFor="let item of article.tagList" class="tag-item me-1">
+        #{{ item }}</span
+      >
+    </div>
+    <p>{{ article.body }}</p>
+    <div class="">
+      <a class="text-muted" (click)="onNavigate()">Read more →</a>
+    </div>
+    <hr>
+    <div class="article-header d-flex justify-content-between">
+      <div class="left d-flex align-items-center">
+        <img
+          [src]="article.author.image"
+          alt="ava"
+          class="article-header-avatar me-2"
+        />
+        <div class="article-info">
+          <a
+            [routerLink]="['/profile', article.author.username]"
+            class="nav-link p-0"
+            >{{ article.author.username }}</a
+          >
+          <p class="p-0 text-muted">{{ article.updatedAt | date: "longDate" }}</p>
+        </div>
+      </div>
+      <div class="favorite-btn">
+        <button
+          class="btn border-success"
+          [ngStyle]="{backgroundColor: article?.favorited ? 'green':'white'}"
+          (click)="onFavorite(article.slug)"
+        >
+          <i
+            class="fa-heart"
+            
+            [ngClass]="{
+              far: !article.favorited,
+              fas: article.favorited
+            }"
+          ></i>
+          {{ article.favoritesCount }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

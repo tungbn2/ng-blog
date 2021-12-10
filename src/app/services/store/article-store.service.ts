@@ -121,10 +121,11 @@ export class ArticleStoreService {
       (favoriteArticle) => {
         this.CurrentArticle = favoriteArticle.article;
         this.ArticlesList.articles.forEach((item) => {
-          if (item.slug == favoriteArticle.article.slug)
-            item = { ...favoriteArticle.article };
+          if (item.slug == favoriteArticle.article.slug){
+            item.favorited = favoriteArticle.article.favorited;
+            item.favoritesCount= favoriteArticle.article.favoritesCount;
+          } 
         });
-
         this.CurrentArticleUpdate.next({ ...this.CurrentArticle });
         this.ArticlesListUpdate.next({ ...this.ArticlesList });
       },
@@ -137,8 +138,10 @@ export class ArticleStoreService {
       (unfavoriteArticle) => {
         this.CurrentArticle = unfavoriteArticle.article;
         this.ArticlesList.articles.forEach((item) => {
-          if (item.slug == unfavoriteArticle.article.slug)
-            item = { ...unfavoriteArticle.article };
+          if (item.slug == unfavoriteArticle.article.slug){
+            item.favorited = unfavoriteArticle.article.favorited;
+            item.favoritesCount= unfavoriteArticle.article.favoritesCount;
+          }
         });
 
         this.CurrentArticleUpdate.next({ ...this.CurrentArticle });

@@ -1,25 +1,105 @@
-<div class="loading text-center mt-4">
-  <div class="spinner-grow text-primary" role="status">
-    <span class="visually-hidden">Loading...</span>
+<section class="site-section pt-5 pb-5">
+  <div class="row">
+    <div class="col-md-12">
+      <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-inner">
+          <div class="carousel-item active">
+            <img src="..." class="d-block w-100" alt="...">
+          </div>
+          <div class="carousel-item">
+            <img src="..." class="d-block w-100" alt="...">
+          </div>
+          <div class="carousel-item">
+            <img src="..." class="d-block w-100" alt="...">
+          </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Next</span>
+        </button>
+      </div>
+        <!-- <div class="owl-stage-outer">
+          <div class="owl-stage" style="transform: translate3d(-1040px, 0px, 0px); transition: all 0s ease 0s; width: 3640px;">
+            <div class="owl-item cloned" style="width: 510px; margin-right: 10px;">
+              <div>
+                <a href="blog-single.html" class="a-block d-flex align-items-center height-lg" style="background-image:url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCHy32cgj9JY6vDxlWzTuCnWe3wPZoQKLY8A&usqp=CAU)">
+                  <div class="text half-to-full">
+                    <span class="category mb-5">Travel</span>
+                    <div class="post-meta">
+                      <span class="author mr-2"><img src="" alt="Colorlib"> Colorlib</span>•
+                      <span class="mr-2">March 15, 2018 </span> •
+                      <span class="ml-2"><span class="fa fa-comments"></span> 3</span>
+                    </div>
+                    <h3>How to Find the Video Games of Your Youth</h3>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quidem nobis, ut dicta eaque ipsa laudantium!</p>
+                  </div>
+                </a>
+              </div>
+            </div>
+
+            <div class="owl-item cloned animated owl-animated-out fadeOut" style="width: 510px; margin-right: 10px; left: 520px;">
+              <div>
+                <a href="blog-single.html" class="a-block d-flex align-items-center height-lg" style="background-image:url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCHy32cgj9JY6vDxlWzTuCnWe3wPZoQKLY8A&usqp=CAU)">
+                  <div class="text half-to-full">
+                    <span class="category mb-5">Sports</span>
+                    <div class="post-meta">
+                      <span class="author mr-2"><img src="" alt="Colorlib"> Colorlib</span>•
+                      <span class="mr-2">March 15, 2018 </span> •
+                      <span class="ml-2"><span class="fa fa-comments"></span> 3</span>
+                    </div>
+                    <h3>How to Find the Video Games of Your Youth</h3>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quidem nobis, ut dicta eaque ipsa laudantium!</p>
+                  </div>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>--> 
+    </div>     
   </div>
-  <div class="spinner-grow text-secondary" role="status">
-    <span class="visually-hidden">Loading...</span>
-  </div>
-  <div class="spinner-grow text-success" role="status">
-    <span class="visually-hidden">Loading...</span>
-  </div>
-  <div class="spinner-grow text-danger" role="status">
-    <span class="visually-hidden">Loading...</span>
-  </div>
-  <div class="spinner-grow text-warning" role="status">
-    <span class="visually-hidden">Loading...</span>
-  </div>
-  <div class="spinner-grow text-info" role="status">
-    <span class="visually-hidden">Loading...</span>
-  </div>
-</div>
+</section>
 
 <div class="home-page">
-  <p>home-page works!</p>
-  <app-home-articles></app-home-articles>
+  <div class="row">
+    <div class="col-lg-9">
+      <div class="home-header">
+        <button class="btn btn-light" (click)="onGotoFeed()" *ngIf="currentUser" >
+          Your Feed
+        </button>
+        <button class="btn btn-light" (click)="onGotoGlobal()" [disabled]="!currentUser" >
+          Global Feed
+        </button>
+      </div>
+      <div class="home-body">
+        <app-home-articles [articleList]="articleList" *ngIf="isLoaded" ></app-home-articles>
+        <!-- <app-loading *ngIf="!isLoaded"></app-loading> -->
+        <div class="no-article" *ngIf="articleList.length == 0 && isLoaded">
+          <h3>Opss,... There is no article here</h3>
+          <a (click)="onGotoGlobal()" class="btn btn-outline-primary" >
+            <i class="fas fa-backward"></i> 
+            Back to Global Feed
+            </a>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-3">
+      <div class="tag-list">
+        <h5>Popular Tags</h5>
+        <p *ngIf="tagList.length == 0">Ops...</p>
+        <ul *ngIf="!tagList.length">
+          <li
+            *ngFor="let tagItem of tagList"
+            (click)="onNavigateByTag(tagItem)"
+            class="tag-link"
+          >
+            {{ tagItem }}
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
 </div>
