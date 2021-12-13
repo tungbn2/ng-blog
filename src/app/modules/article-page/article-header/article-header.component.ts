@@ -22,6 +22,7 @@ export class ArticleHeaderComponent implements OnInit {
   }
 
   OnNavigate() {
+    // ggfgfg
     let slug = this.articleData ? this.articleData.currentArticle.slug : '';
     this.router.navigate(['/editor', slug]);
   }
