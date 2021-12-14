@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
 import { ArticlesModel } from 'src/app/models';
 import { ConnectApiService } from '../connect-api/connect-api.service';
 import { HandleErrorService } from './handle-error.service';
@@ -10,7 +10,7 @@ import { HandleErrorService } from './handle-error.service';
 })
 export class CommentStoreService {
   private CommentList: ArticlesModel.Comment[] = [];
-  CommentListData = new BehaviorSubject<ArticlesModel.Comment[]>([]);
+  CommentListData = new Subject<ArticlesModel.Comment[]>();
 
   constructor(
     private api: ConnectApiService,

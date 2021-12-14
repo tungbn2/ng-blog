@@ -38,6 +38,7 @@ export class ArticlePageComponent implements OnInit, OnDestroy {
       this.article.GetArticleAndProfile(this.slug);
       // subscribe để getData từ Subject gồm author và profile
       this.article.CurrentArticleAndProfileUpdate.subscribe(articleAndProfile => { 
+        console.log(articleAndProfile);
         this.isLoaded = true;
         this.articleData = articleAndProfile;
         console.log(this.articleData);

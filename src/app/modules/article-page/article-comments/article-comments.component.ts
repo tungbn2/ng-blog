@@ -32,7 +32,7 @@ export class ArticleCommentsComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    // Lấy thông tin user login
+    console.log('nam cao');
     this.user$ = this.authStore.currentUser.subscribe((user) => {
       this.currentUser = user;
     });
