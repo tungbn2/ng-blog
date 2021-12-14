@@ -1,10 +1,10 @@
-import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
 import { switchMap, tap } from 'rxjs/operators';
+import { ProfileStoreService } from 'src/app/services/store/profile-store.service';
+import { AuthStoreService } from 'src/app/services/store/auth-store.service';
 import { ProfileData } from 'src/app/models/Profile.model';
 import { User } from 'src/app/models/User.model';
-import { AuthStoreService } from 'src/app/services/store/auth-store.service';
-import { ProfileStoreService } from './profile-service/profile-store.service';
 
 @Component({
   selector: 'app-profile-page',
@@ -12,14 +12,13 @@ import { ProfileStoreService } from './profile-service/profile-store.service';
   styleUrls: ['./profile-page.component.css'],
 })
 export class ProfilePageComponent implements OnInit {
-  profile!: ProfileData;
+  profileData!: ProfileData;
   currentUser!: User;
-  follow: boolean = true;
 
   constructor(
-    private profileService: ProfileStoreService,
     private route: ActivatedRoute,
-    private authService: AuthStoreService,
+    private profileStore: ProfileStoreService,
+    private authStore: AuthStoreService,
     private router: Router
   ) {}
 
@@ -29,32 +28,37 @@ export class ProfilePageComponent implements OnInit {
         switchMap((params) => {
           if (params['username']) {
             let username = params['username'];
-            this.profileService.GetProfile(username);
+            this.profileStore.GetProfile(username);
           }
-          return this.profileService.ProfileUpdate;
+          return this.profileStore.ProfileUpdate;
         }),
         tap((profile) => {
-          this.profile = profile;
+          this.profileData = profile;
         })
       )
       .subscribe();
 
-    this.authService.currentUser.subscribe((data) => {
-      this.currentUser = data as User;
+    this.authStore.currentUser.subscribe((userData) => {
+      this.currentUser = userData as User;
     });
   }
 
   onFollowUser() {
     let user = localStorage.getItem('userBlogData');
+
     if (!user) {
       this.router.navigateByUrl('/login');
       return;
     }
 
-    if (this.profile.following) {
-      this.profileService.UnfollowUser(this.profile.username);
-    } else {
-      this.profileService.FollowUser(this.profile.username);
+    if (this.profileData?.following) {
+      this.profileStore.UnfollowUser(this.profileData.username);
+      return;
+    }
+
+    if (this.profileData) {
+      this.profileStore.FollowUser(this.profileData.username);
+      return;
     }
   }
 }

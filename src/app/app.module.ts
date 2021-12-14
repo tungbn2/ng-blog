@@ -9,7 +9,12 @@ import { LoginComponent } from './modules/auth-page/login/login.component';
 import { RegisterComponent } from './modules/auth-page/register/register.component';
 
 @NgModule({
-  declarations: [AppComponent, HeaderComponent, LoginComponent, RegisterComponent],
+  declarations: [
+    AppComponent,
+    HeaderComponent,
+    LoginComponent,
+    RegisterComponent,
+  ],
   imports: [BrowserModule, AppRoutingModule, CoreModule, AllAppModule],
   providers: [],
   bootstrap: [AppComponent],

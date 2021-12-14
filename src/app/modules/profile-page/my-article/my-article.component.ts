@@ -1,19 +1,25 @@
-import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
 import { switchMap, tap } from 'rxjs/operators';
-import { MultiArticles } from 'src/app/models/Articles.model';
 import { ArticleStoreService } from 'src/app/services/store/article-store.service';
+import { MultiArticles } from 'src/app/models/Articles.model';
 
 @Component({
-  selector: 'app-my-article',
+  selector: 'app-list-articles',
   templateUrl: './my-article.component.html',
   styleUrls: ['./my-article.component.css'],
 })
 export class MyArticleComponent implements OnInit {
-  articleList!: MultiArticles;
+  articlesList!: MultiArticles;
+  username: string = '';
+  isLoaded: boolean = false;
+
+  currentPage: number = 1;
+  pageList: number[] = [];
+
   constructor(
-    private articleService: ArticleStoreService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private articleStore: ArticleStoreService
   ) {}
 
   ngOnInit(): void {
@@ -21,15 +27,55 @@ export class MyArticleComponent implements OnInit {
       .pipe(
         switchMap((params) => {
           if (params['username']) {
-            let username = params['username'];
-            this.articleService.GetListArticles({ author: username });
+            this.username = params['username'];
+            this.articleStore.GetListArticles({
+              author: this.username,
+              offset: 0,
+              limit: 20,
+            });
           }
-          return this.articleService.ArticlesListUpdate;
+          return this.articleStore.ArticlesListUpdate;
         }),
-        tap((articleListData) => {
-          this.articleList = articleListData;
+        tap((articlesListData) => {
+          this.articlesList = articlesListData;
+          this.isLoaded = true;
+
+          this.pageList = [];
+          let total = Math.ceil(articlesListData.articlesCount / 20);
+          for (let i = 1; i <= total; i++) {
+            this.pageList.push(i);
+          }
         })
       )
       .subscribe();
+  }
+
+  onNextPage() {
+    this.currentPage++;
+    this.articleStore.GetListArticles({
+      author: this.username,
+      offset: (this.currentPage - 1) * 20,
+      limit: 20,
+    });
+  }
+
+  onGotoPage(item: number) {
+    if (this.currentPage != item) {
+      this.currentPage = item;
+      this.articleStore.GetListArticles({
+        author: this.username,
+        offset: (this.currentPage - 1) * 20,
+        limit: 20,
+      });
+    }
+  }
+
+  onPrevPage() {
+    this.currentPage--;
+    this.articleStore.GetListArticles({
+      author: this.username,
+      offset: (this.currentPage - 1) * 20,
+      limit: 20,
+    });
   }
 }

@@ -1,22 +1,39 @@
 .article {
-  border: 1px solid gray;
-  border-radius: 10px;
+  height: 100%;
+}
+
+.card {
+  border-radius: 1rem;
+  border: 0;
+  transition: all 0.5s ease-in-out;
+  cursor: pointer;
+
   transition: all 0.5s ease-in-out;
 }
 
-.article:hover {
+.card-body {
+  border: 0;
+}
+
+.card-body:hover {
+  background-color: bisque;
+}
+
+.card-header {
+  border-top-right-radius: 1rem;
+  border-top-left-radius: 1rem;
+  padding: 1rem;
+  border: 0;
+}
+
+.card-footer {
+  border-bottom-right-radius: 1rem;
+  border-bottom-left-radius: 1rem;
+  padding: 1rem;
+}
+
+.card:hover {
   box-shadow: 5px 5px 15px gray;
-}
-
-.article-header {
-  background-color: gainsboro;
-  border-radius: 10px;
-  padding: 10px;
-}
-
-.article-body,
-.article-footer {
-  padding: 10px;
 }
 
 .article-header-avatar {
@@ -37,14 +54,22 @@ p {
   padding: 5px;
   border: 1px solid grey;
   border-radius: 10px;
+  cursor: pointer;
+
+  display: inline-block;
+}
+
+.tag-item:hover {
+  font-weight: bolder;
 }
 
 .btn-custom {
   font-weight: bold;
+  border-radius: 1rem;
 }
 
 .btn-custom:hover {
-  border-bottom: 1px solid rgb(13, 110, 250);
+  box-shadow: 5px 5px 15px gray;
   color: rgb(13, 110, 250);
 }
 
@@ -53,16 +78,6 @@ hr {
   margin-bottom: 5px;
 }
 
-p {
-  margin: 0;
-}
-
-.nav-link {
-  padding: 0;
-}
-
-.tag-item {
-  padding: 5px;
-  border: 1px solid grey;
-  border-radius: 10px;
+.fas {
+  color: red;
 }

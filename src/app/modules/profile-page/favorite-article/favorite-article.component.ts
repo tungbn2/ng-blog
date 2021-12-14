@@ -11,6 +11,11 @@ import { ArticleStoreService } from 'src/app/services/store/article-store.servic
 })
 export class FavoriteArticleComponent implements OnInit {
   articlesList!: MultiArticles;
+  username: string = '';
+  isLoaded: boolean = false;
+
+  currentPage: number = 1;
+  pageList: number[] = [];
 
   constructor(
     private route: ActivatedRoute,
@@ -22,15 +27,55 @@ export class FavoriteArticleComponent implements OnInit {
       .pipe(
         switchMap((params) => {
           if (params['username']) {
-            let username = params['username'];
-            this.articleStore.GetListArticles({ favorited: username });
+            this.username = params['username'];
+            this.articleStore.GetListArticles({
+              favorited: this.username,
+              offset: 0,
+              limit: 20,
+            });
           }
           return this.articleStore.ArticlesListUpdate;
         }),
         tap((articlesListData) => {
           this.articlesList = articlesListData;
+          this.isLoaded = true;
+
+          this.pageList = [];
+          let total = Math.ceil(articlesListData.articlesCount / 20);
+          for (let i = 1; i <= total; i++) {
+            this.pageList.push(i);
+          }
         })
       )
       .subscribe();
+  }
+
+  onNextPage() {
+    this.currentPage++;
+    this.articleStore.GetListArticles({
+      favorited: this.username,
+      offset: (this.currentPage - 1) * 20,
+      limit: 20,
+    });
+  }
+
+  onPrevPage() {
+    this.currentPage--;
+    this.articleStore.GetListArticles({
+      favorited: this.username,
+      offset: (this.currentPage - 1) * 20,
+      limit: 20,
+    });
+  }
+
+  onGotoPage(item: number) {
+    if (this.currentPage != item) {
+      this.currentPage = item;
+      this.articleStore.GetListArticles({
+        favorited: this.username,
+        offset: (this.currentPage - 1) * 20,
+        limit: 20,
+      });
+    }
   }
 }

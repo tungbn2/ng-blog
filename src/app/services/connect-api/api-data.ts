@@ -20,9 +20,14 @@ export function EndpointsUser(username: string) {
   };
 }
 
-export function EndpointsArticles(slug?: string) {
+export function EndpointsArticles(
+  slug?: string,
+  limit: number = 20,
+  offset: number = 0
+) {
   return {
     ListArticles: '/api/articles',
+    ListArticlesByPage: `/api/articles?offset=${offset}&limit=${limit}`,
     FeedArticles: '/api/articles/feed',
     GetArticle: `/api/articles/${slug}`,
     CreateArticle: '/api/articles',
@@ -41,7 +46,3 @@ export function EndpointsAuthen() {
     UpdateUser: '/api/user',
   };
 }
-
-export const HandleError = (err: any) => {
-  alert(err.error.message);
-};

@@ -8,6 +8,6 @@ export interface getArticleParam {
   tag?: string;
   author?: string;
   favorited?: string;
-  limit?: string;
-  offset?: string;
+  limit?: number;
+  offset?: number;
 }

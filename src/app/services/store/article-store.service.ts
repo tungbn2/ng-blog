@@ -5,11 +5,9 @@ import { Subject } from 'rxjs';
 import { ArticlesModel, OtherModel, ProfileModel } from 'src/app/models';
 import { ConnectApiService } from '../connect-api/connect-api.service';
 import { switchMap, tap } from 'rxjs/operators';
+import { HandleErrorService } from './handle-error.service';
+import Swal from 'sweetalert2';
 
-export interface CurrentArticleAndProfile {
-  currentArticle: ArticlesModel.Article;
-  author: ProfileModel.ProfileData;
-}
 @Injectable({
   providedIn: 'root',
 })
@@ -19,13 +17,19 @@ export class ArticleStoreService {
     articlesCount: 0,
   };
   private CurrentArticle: ArticlesModel.Article | null = null;
-  private CurrentArticleAndProfile: CurrentArticleAndProfile | null = null;
+  private CurrentArticleAndProfile: ArticlesModel.CurrentArticleAndProfile | null =
+    null;
 
   ArticlesListUpdate = new Subject<ArticlesModel.MultiArticles>();
   CurrentArticleUpdate = new Subject<ArticlesModel.Article>();
-  CurrentArticleAndProfileUpdate = new Subject<CurrentArticleAndProfile>();
+  CurrentArticleAndProfileUpdate =
+    new Subject<ArticlesModel.CurrentArticleAndProfile>();
 
-  constructor(private api: ConnectApiService, private router: Router) {}
+  constructor(
+    private api: ConnectApiService,
+    private handleErr: HandleErrorService,
+    private router: Router
+  ) {}
 
   GetListArticles(params: OtherModel.getArticleParam) {
     this.api.GetListArticles(params).subscribe(
@@ -33,7 +37,7 @@ export class ArticleStoreService {
         this.ArticlesList = articlesData;
         this.ArticlesListUpdate.next({ ...this.ArticlesList });
       },
-      (err) => console.log(err)
+      (err) => this.handleErr.HandleError(err)
     );
   }
 
@@ -43,9 +47,7 @@ export class ArticleStoreService {
         this.ArticlesList = articlesData;
         this.ArticlesListUpdate.next({ ...this.ArticlesList });
       },
-      (err) => {
-        console.log(err);
-      }
+      (err) => this.handleErr.HandleError(err)
     );
   }
 
@@ -55,7 +57,7 @@ export class ArticleStoreService {
         this.CurrentArticle = articleData.article;
         this.CurrentArticleUpdate.next({ ...this.CurrentArticle });
       },
-      (err) => console.log(err)
+      (err) => this.handleErr.HandleError(err)
     );
   }
 
@@ -82,37 +84,63 @@ export class ArticleStoreService {
             : '';
         })
       )
-      .subscribe();
+      .subscribe(
+        () => {},
+        (err) => this.handleErr.HandleError(err)
+      );
   }
 
-  CreateArticle(newArticle: ArticlesModel.NewArticle) {
+  CreateArticle(newArticleData: ArticlesModel.ArticleData) {
+    let newArticle: ArticlesModel.NewArticle = { article: newArticleData };
     this.api.PostCreateArticle(newArticle).subscribe(
       (articleData) => {
-        this.ArticlesList.articles.unshift(articleData.article);
-        this.ArticlesListUpdate.next({ ...this.ArticlesList });
+        Swal.fire({
+          position: 'center',
+          icon: 'success',
+          title: 'Create Article Successfully!',
+          showConfirmButton: false,
+          timer: 1500,
+        });
+        this.router.navigate(['/']);
       },
-      (err) => console.log(err)
+      (err) => this.handleErr.HandleError(err)
     );
   }
 
-  UpdateArticle(updateArticle: ArticlesModel.UpdateArticle, slug: string) {
+  UpdateArticle(updateArticleData: ArticlesModel.ArticleData, slug: string) {
+    let updateArticle: ArticlesModel.UpdateArticle = {
+      article: updateArticleData,
+    };
     this.api.PutUpdateArticle(updateArticle, slug).subscribe(
       (articleData) => {
         this.CurrentArticle = articleData.article;
         this.CurrentArticleUpdate.next({ ...this.CurrentArticle });
-        console.log('Update Article Successfully!');
+        Swal.fire({
+          position: 'center',
+          icon: 'success',
+          title: 'Update Article Successfully!',
+          showConfirmButton: false,
+          timer: 1500,
+        });
+        this.router.navigate(['/article', slug]);
       },
-      (err) => console.log(err)
+      (err) => this.handleErr.HandleError(err)
     );
   }
 
   DeleteArticle(slug: string) {
     this.api.DeleteArticle(slug).subscribe(
       () => {
-        alert('Delete article successfully!!!');
+        Swal.fire({
+          position: 'center',
+          icon: 'success',
+          title: 'Delete article successfully!!!',
+          showConfirmButton: false,
+          timer: 1500,
+        });
         this.router.navigateByUrl('/');
       },
-      (err) => console.log(err)
+      (err) => this.handleErr.HandleError(err)
     );
   }
 
@@ -128,9 +156,14 @@ export class ArticleStoreService {
         });
 
         this.CurrentArticleUpdate.next({ ...this.CurrentArticle });
+        if (this.CurrentArticleAndProfile)
+          this.CurrentArticleAndProfileUpdate.next({
+            ...this.CurrentArticleAndProfile,
+            currentArticle: this.CurrentArticle,
+          });
         this.ArticlesListUpdate.next({ ...this.ArticlesList });
       },
-      (err) => console.log(err)
+      (err) => this.handleErr.HandleError(err)
     );
   }
 
@@ -146,9 +179,14 @@ export class ArticleStoreService {
         });
 
         this.CurrentArticleUpdate.next({ ...this.CurrentArticle });
+        if (this.CurrentArticleAndProfile)
+          this.CurrentArticleAndProfileUpdate.next({
+            ...this.CurrentArticleAndProfile,
+            currentArticle: this.CurrentArticle,
+          });
         this.ArticlesListUpdate.next({ ...this.ArticlesList });
       },
-      (err) => console.log(err)
+      (err) => this.handleErr.HandleError(err)
     );
   }
 
@@ -162,7 +200,7 @@ export class ArticleStoreService {
           });
         }
       },
-      (err) => console.log(err)
+      (err) => this.handleErr.HandleError(err)
     );
   }
 
@@ -176,7 +214,7 @@ export class ArticleStoreService {
           });
         }
       },
-      (err) => console.log(err)
+      (err) => this.handleErr.HandleError(err)
     );
   }
 }

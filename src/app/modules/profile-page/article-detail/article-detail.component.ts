@@ -10,15 +10,21 @@ import { ArticleStoreService } from 'src/app/services/store/article-store.servic
 })
 export class ArticleDetailComponent implements OnInit {
   @Input() article!: Article;
+  disabled: boolean = false;
 
   constructor(
-    private router: Router,
-    private articleService: ArticleStoreService
+    private articleStore: ArticleStoreService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {}
 
-  onFavorite(slug: string, favorite: boolean) {
+  onFavorite(slug: string, favorite: boolean, event: MouseEvent) {
+    (event.target as HTMLButtonElement).disabled = true;
+    setTimeout(() => {
+      (event.target as HTMLButtonElement).disabled = false;
+    }, 1000);
+
     let user = localStorage.getItem('userBlogData');
     if (!user) {
       this.router.navigateByUrl('/login');
@@ -26,13 +32,17 @@ export class ArticleDetailComponent implements OnInit {
     }
 
     if (favorite) {
-      this.articleService.UnfavoriteArticle(slug);
+      this.articleStore.UnfavoriteArticle(slug);
     } else {
-      this.articleService.FavoriteArticle(slug);
+      this.articleStore.FavoriteArticle(slug);
     }
   }
 
   onNavigate() {
     this.router.navigate(['/article', this.article.slug]);
+  }
+
+  onClick(item: string) {
+    this.router.navigateByUrl('/');
   }
 }
