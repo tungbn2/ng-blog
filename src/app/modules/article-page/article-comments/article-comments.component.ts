@@ -34,22 +34,17 @@ export class ArticleCommentsComponent implements OnInit, OnDestroy {
     this.user$ = this.authStore.currentUser.subscribe((user) => {
       this.currentUser = user;
     });
-    this.route$ = this.route.params
-      .pipe(
-        switchMap((param) => {
-          this.isLoaded = false;
-          this.slug = param['slug'];
-          this.commentStore.GetCommentsFromArticle(this.slug);
-          return this.commentStore.CommentListData;
-        }),
-        tap((commentData) => {
-          this.commentList = commentData;
-          setTimeout(() => {
-            this.isLoaded = true;
-          }, 500);
-        })
-      )
-      .subscribe();
+    this.route$ = this.route.params.subscribe(data => { 
+      this.isLoaded = false;
+      this.slug = data['slug'];
+      this.commentStore.GetCommentsFromArticle(this.slug);
+      this.commentStore.CommentListData.subscribe(commentData => { 
+        this.commentList = commentData;
+        setTimeout(() => {
+          this.isLoaded = true;
+        }, 500);
+      })
+    }) 
   }
 
   changeSource(event: any) {
