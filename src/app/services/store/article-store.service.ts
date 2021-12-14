@@ -16,14 +16,15 @@ export class ArticleStoreService {
     articles: [],
     articlesCount: 0,
   };
+  // Khai báo biến để cập nhật Article mỗi khi có sự thay đổi
   private CurrentArticle: ArticlesModel.Article | null = null;
+  // Khai báo biến để cập nhật Profile và article mỗi khi có sự thay đổi
   private CurrentArticleAndProfile: ArticlesModel.CurrentArticleAndProfile | null =
     null;
 
   ArticlesListUpdate = new Subject<ArticlesModel.MultiArticles>();
   CurrentArticleUpdate = new Subject<ArticlesModel.Article>();
-  CurrentArticleAndProfileUpdate =
-    new Subject<ArticlesModel.CurrentArticleAndProfile>();
+  CurrentArticleAndProfileUpdate = new Subject<ArticlesModel.CurrentArticleAndProfile>();
 
   constructor(
     private api: ConnectApiService,
@@ -66,17 +67,20 @@ export class ArticleStoreService {
       .GetArticleBySlug(slug)
       .pipe(
         switchMap((articleData) => {
+          // articleData lưu trữ data article được call từ API
           this.CurrentArticle = articleData.article;
           let username: string = articleData.article.author.username;
           return this.api.GetProfile(username);
         }),
         tap((author) => {
+          // author lưu trữ profile mà được call từ API thông qua username
           this.CurrentArticle
-            ? (this.CurrentArticleAndProfile = {
+            ? (this.CurrentArticleAndProfile = { 
                 author: author.profile,
-                currentArticle: this.CurrentArticle,
+                currentArticle: this.CurrentArticle, 
               })
             : '';
+          // Khi this.CurrentArticleAndProfile tồn tại thì this.CurrentArticleAndProfileUpdate sẽ lưu giá trị mới
           this.CurrentArticleAndProfile
             ? this.CurrentArticleAndProfileUpdate.next({
                 ...this.CurrentArticleAndProfile,
@@ -147,20 +151,28 @@ export class ArticleStoreService {
   FavoriteArticle(slug: string) {
     this.api.PostFavoriteArticle(slug).subscribe(
       (favoriteArticle) => {
+        // Cập nhật lại article cho CurrentArticle
+        console.log(favoriteArticle);
         this.CurrentArticle = favoriteArticle.article;
+        // this.ArticlesList.articles ban đầu là rỗng
+        console.log(this.ArticlesList.articles);
+        // Cái này chỉ dùng cho khi đi từ trang home vào article nếu chỉ reload lại thì giá trị là 0
         this.ArticlesList.articles.forEach((item) => {
           if (item.slug == favoriteArticle.article.slug) {
             item.favorited = favoriteArticle.article.favorited;
             item.favoritesCount = favoriteArticle.article.favoritesCount;
           }
         });
-
+        // Cập nhật data với favorite mới vào CurrentArticleUpdate
         this.CurrentArticleUpdate.next({ ...this.CurrentArticle });
+        // Cập nhật giá trị mới cho cho this.CurrentArticleAndProfileUpdate
         if (this.CurrentArticleAndProfile)
           this.CurrentArticleAndProfileUpdate.next({
             ...this.CurrentArticleAndProfile,
             currentArticle: this.CurrentArticle,
           });
+        console.log(this.ArticlesList);
+        // Cập nhật lại giá trị 
         this.ArticlesListUpdate.next({ ...this.ArticlesList });
       },
       (err) => this.handleErr.HandleError(err)
@@ -170,7 +182,11 @@ export class ArticleStoreService {
   UnfavoriteArticle(slug: string) {
     this.api.DeleteUnfavoriteArticle(slug).subscribe(
       (unfavoriteArticle) => {
+        console.log(unfavoriteArticle);
+        // Cập nhật lại article cho CurrentArticle
         this.CurrentArticle = unfavoriteArticle.article;
+        console.log(this.ArticlesList);
+        // Cái này chỉ dùng cho khi đi từ trang home vào article nếu chỉ reload lại thì giá trị là 0
         this.ArticlesList.articles.forEach((item) => {
           if (item.slug == unfavoriteArticle.article.slug) {
             item.favorited = unfavoriteArticle.article.favorited;
@@ -184,16 +200,20 @@ export class ArticleStoreService {
             ...this.CurrentArticleAndProfile,
             currentArticle: this.CurrentArticle,
           });
+        console.log(this.ArticlesList);
+        // Cập nhật lại giá trị 
         this.ArticlesListUpdate.next({ ...this.ArticlesList });
       },
       (err) => this.handleErr.HandleError(err)
     );
   }
 
+  // Hàm xử lý unfollowing
   FollowUserFromArticle(username: string) {
     this.api.PostFollowUser(username).subscribe(
       (profile) => {
         if (this.CurrentArticleAndProfile) {
+          // Cập nhật lại author chứa profile thành profile mới sau khi thay đổi following sang true
           this.CurrentArticleAndProfile.author = profile.profile;
           this.CurrentArticleAndProfileUpdate.next({
             ...this.CurrentArticleAndProfile,
@@ -204,10 +224,13 @@ export class ArticleStoreService {
     );
   }
 
+   // Hàm xử lý unfollowing
   UnFollowUserFromArticle(username: string) {
     this.api.DeleteUnfollowUser(username).subscribe(
       (profile) => {
         if (this.CurrentArticleAndProfile) {
+          console.log(profile);
+          // Cập nhật lại author chứa profile thành profile mới sau khi thay đổi following sang false
           this.CurrentArticleAndProfile.author = profile.profile;
           this.CurrentArticleAndProfileUpdate.next({
             ...this.CurrentArticleAndProfile,

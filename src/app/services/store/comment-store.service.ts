@@ -23,6 +23,7 @@ export class CommentStoreService {
     };
     this.api.PostAddCommentsToArticle(slug, newComment).subscribe(
       (newComment) => {
+        console.log(newComment);
         this.CommentList.push(newComment.comment);
         this.CommentListData.next(this.CommentList.slice());
       },
@@ -33,6 +34,7 @@ export class CommentStoreService {
   GetCommentsFromArticle(slug: string) {
     this.api.GetCommentsFromArticle(slug).subscribe(
       (commentsData) => {
+        console.log(commentsData);
         this.CommentList = commentsData.comments.length
           ? commentsData.comments
           : [];

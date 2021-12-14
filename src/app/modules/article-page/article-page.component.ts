@@ -23,27 +23,26 @@ export class ArticlePageComponent implements OnInit, OnDestroy {
   constructor(
     private auth: AuthStoreService,
     private article: ArticleStoreService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
   ) {}
 
   ngOnInit(): void {
     this.user$ = this.auth.currentUser.subscribe((user) => {
+      // user là lưu trữ thông tin user Login hiện tại để hiện thị nút delete hay edit hay không
       this.currentUser = user;
     });
-    this.article$ = this.route.params
-      .pipe(
-        switchMap((params) => {
-          this.isLoaded = false;
-          this.slug = params['slug'];
-          this.article.GetArticleAndProfile(this.slug);
-          return this.article.CurrentArticleAndProfileUpdate;
-        }),
-        tap((articleAndProfile) => {
-          this.isLoaded = true;
-          this.articleData = articleAndProfile;
-        })
-      )
-      .subscribe();
+    this.article$ = this.route.params.subscribe(data => { 
+      this.isLoaded = false;
+      // Lấy slug được truyền lên url
+      this.slug = data['slug'];
+      this.article.GetArticleAndProfile(this.slug);
+      // subscribe để getData từ Subject gồm author và profile
+      this.article.CurrentArticleAndProfileUpdate.subscribe(articleAndProfile => { 
+        this.isLoaded = true;
+        this.articleData = articleAndProfile;
+        console.log(this.articleData);
+      })
+    });
   }
 
   ngOnDestroy() {

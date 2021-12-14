@@ -13,6 +13,7 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./article-comments.component.css'],
 })
 export class ArticleCommentsComponent implements OnInit, OnDestroy {
+  // Dùng để check có hiện thị delete comment hay không
   @Input() isUser: boolean = false;
 
   commentList: ArticlesModel.Comment[] = [];
@@ -31,25 +32,24 @@ export class ArticleCommentsComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
+    // Lấy thông tin user login
     this.user$ = this.authStore.currentUser.subscribe((user) => {
       this.currentUser = user;
     });
-    this.route$ = this.route.params
-      .pipe(
-        switchMap((param) => {
-          this.isLoaded = false;
-          this.slug = param['slug'];
-          this.commentStore.GetCommentsFromArticle(this.slug);
-          return this.commentStore.CommentListData;
-        }),
-        tap((commentData) => {
-          this.commentList = commentData;
-          setTimeout(() => {
-            this.isLoaded = true;
-          }, 500);
-        })
-      )
-      .subscribe();
+    this.route$ = this.route.params.subscribe(data => { 
+      this.isLoaded = false;
+      // Lấy slug được truyền lên url
+      this.slug = data['slug'];
+      this.commentStore.GetCommentsFromArticle(this.slug);
+      // subscribe để getData từ Subject gồm author và profile
+      this.commentStore.CommentListData.subscribe(commentData => { 
+        console.log(commentData);
+        this.commentList = commentData;
+        setTimeout(() => {
+          this.isLoaded = true;
+        }, 500);
+      })
+    }) 
   }
 
   changeSource(event: any) {

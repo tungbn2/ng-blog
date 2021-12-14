@@ -13,7 +13,10 @@ export class ArticleHeaderComponent implements OnInit {
   @Input() articleData: ArticlesModel.CurrentArticleAndProfile | null = null;
   @Input() isUser: boolean = false;
 
-  constructor(private router: Router, private article: ArticleStoreService) {}
+  constructor(
+    private router: Router,
+    private article: ArticleStoreService
+  ) {}
 
   ngOnInit(): void {}
 
@@ -22,7 +25,6 @@ export class ArticleHeaderComponent implements OnInit {
   }
 
   OnNavigate() {
-    // ggfgfg hihihihi
     let slug = this.articleData ? this.articleData.currentArticle.slug : '';
     this.router.navigate(['/editor', slug]);
   }
@@ -52,7 +54,9 @@ export class ArticleHeaderComponent implements OnInit {
     }, 1000);
 
     if (this.articleData?.author.following) {
-      this.article.UnFollowUserFromArticle(this.articleData.author.username);
+      this.articleData
+        ? this.article.UnFollowUserFromArticle(this.articleData.author.username)
+        : '';
     } else {
       this.articleData
         ? this.article.FollowUserFromArticle(this.articleData.author.username)
@@ -66,13 +70,10 @@ export class ArticleHeaderComponent implements OnInit {
       ($event.target as HTMLButtonElement).disabled = false;
     }, 1000);
 
-    if (this.articleData?.currentArticle?.favorited) {
+    if (this.articleData?.currentArticle?.favorited && this.articleData?.currentArticle) {
       this.article.UnfavoriteArticle(this.articleData.currentArticle.slug);
     }
-    if (
-      !this.articleData?.currentArticle?.favorited &&
-      this.articleData?.currentArticle
-    ) {
+    if (!this.articleData?.currentArticle?.favorited && this.articleData?.currentArticle) {
       this.article.FavoriteArticle(this.articleData.currentArticle.slug);
     }
   }
