@@ -65,13 +65,10 @@ export class ArticleHeaderComponent implements OnInit {
       ($event.target as HTMLButtonElement).disabled = false;
     }, 1000);
 
-    if (this.articleData?.currentArticle?.favorited) {
+    if (this.articleData?.currentArticle?.favorited && this.articleData?.currentArticle) {
       this.article.UnfavoriteArticle(this.articleData.currentArticle.slug);
     }
-    if (
-      !this.articleData?.currentArticle?.favorited &&
-      this.articleData?.currentArticle
-    ) {
+    if (!this.articleData?.currentArticle?.favorited && this.articleData?.currentArticle) {
       this.article.FavoriteArticle(this.articleData.currentArticle.slug);
     }
   }

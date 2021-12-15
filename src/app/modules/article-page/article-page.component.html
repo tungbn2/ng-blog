@@ -9,6 +9,7 @@
     <hr />
     <app-article-comments
       [isUser]="currentUser?.username == articleData?.author?.username"
+      [currentUser]="currentUser"
     ></app-article-comments>
   </div>
 </div>

@@ -1,6 +1,6 @@
 import { ActivatedRoute } from '@angular/router';
 import { Component, Input, OnInit } from '@angular/core';
-import { ArticlesModel } from 'src/app/models';
+import { ArticlesModel, UserModel } from 'src/app/models';
 import { CommentStoreService } from 'src/app/services/store/comment-store.service';
 import Swal from 'sweetalert2';
 
@@ -12,20 +12,20 @@ import Swal from 'sweetalert2';
 export class CommentDetailComponent implements OnInit {
   @Input() comment!: ArticlesModel.Comment;
   @Input() isUser: boolean = false;
+  @Input() currentUser: UserModel.User | null = null;
 
   slug: string = '';
 
   constructor(
     private commentStore: CommentStoreService,
     private route: ActivatedRoute
-  ) {
+  ) {}
+
+  ngOnInit(): void {
     this.slug = this.route.snapshot.params['slug'];
   }
 
-  ngOnInit(): void {}
-
   onDeleteComment() {
-    // this.commentStore.DeleteComment(this.slug, this.comment.id);
     Swal.fire({
       title: 'Are you sure?',
       text: 'You want to delete this comment!',
