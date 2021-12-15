@@ -1,0 +1,113 @@
+ul {
+  padding: 0;
+}
+
+hr {
+  margin-top: 0;
+}
+.active {
+  font-weight: bolder;
+  border-bottom: 1px solid gainsboro;
+  box-shadow: 2px 2px 5px rgb(209, 209, 209);
+  font-size: 1.1rem;
+  color: rgb(13, 110, 250);
+}
+.home-page{
+  background-color: #f5f7fe;
+}
+.btn-custom {
+  box-shadow: 2px 2px 5px gainsboro;
+  border-radius: 1rem;
+}
+
+.btn-custom:hover {
+  box-shadow: 10px 10px 5px gainsboro;
+  color: rgb(13, 110, 250);
+}
+
+.tag-list {
+  border: 1px solid gray;
+  padding: 1rem;
+  border-radius: 1rem;
+}
+
+.tag-link {
+  cursor: pointer;
+  list-style: none;
+  padding: 5px;
+
+  border: 1px solid grey;
+  border-radius: 10px;
+  margin: 5px;
+
+  word-break: keep-all;
+  display: inline-block;
+  font-weight: bold;
+  color: rgb(25, 25, 65);
+}
+
+.page-link {
+  border: 0px;
+  cursor: pointer;
+}
+
+/* banner */
+.bg-img {
+  min-height: 100vh;
+  padding: 40px 0;
+  display: flex;
+  align-items: center;
+}
+
+.bg-img h1.page-title {
+  font-size: 70px;
+  text-shadow: 2px 2px 4px #e2e6fc, -2px -2px 4px #fff;
+}
+
+.header-image-bottom {
+  pointer-events: none;
+}
+
+.main-container {
+  background: #f5f7fe;
+}
+
+.pnf-page-title {
+  font-size: 90px;
+  text-shadow: 2px 2px 4px #e2e6fc, -2px -2px 4px #fff;
+}
+
+.caption{
+  top: 20%;
+  left: 100px;
+}
+.carousel-inner{
+  height: 70vh;
+  object-fit: cover;
+}
+.container-width {
+  width: 90%;
+}
+.row{
+  --bs-gutter-x:0;
+}
+@media screen and (max-width: 760px) {
+  .caption{
+    top:15%;
+    left: 5px;
+  }
+  .carousel-inner{
+    height: auto;
+  }
+}
+@media screen and (max-width: 470px) {
+  .caption h1{
+    font-size: 24px !important;
+  }
+  .caption p{
+    font-size: 14px !important;
+  }
+  .caption h5, .caption .tag{
+    display: none;
+  }
+}

@@ -1,0 +1,112 @@
+.article {
+  height: 100%;
+}
+
+.card {
+  border-radius: 1rem;
+  border: 0;
+  cursor: pointer;
+
+  transition: all 0.5s ease-in-out;
+}
+
+.card:hover {
+  box-shadow: 3px 3px 15px rgb(110, 162, 235);
+}
+
+.card-body {
+  border: 0;
+}
+
+.card-header {
+  border-top-right-radius: 1rem;
+  border-top-left-radius: 1rem;
+  padding: 1rem;
+  border: 0;
+}
+
+.card-footer {
+  border-bottom-right-radius: 1rem;
+  border-bottom-left-radius: 1rem;
+  padding: 1rem;
+}
+
+.article-header-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+
+p {
+  margin: 0;
+}
+
+.nav-link {
+  padding: 0;
+}
+
+.tag-item {
+  border: 1px solid gray;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 12px !important;
+  padding: 0 5px;
+  display: inline-block;
+  margin: 0.25rem 0;
+}
+
+.tag-item:hover {
+  font-weight: bolder;
+}
+
+.btn-custom {
+  font-weight: bold;
+  border-radius: 1rem;
+}
+
+.btn-custom:hover {
+  /* border-bottom: 1px solid gainsboro; */
+  box-shadow: 5px 5px 15px gray;
+  color: rgb(13, 110, 250);
+}
+
+hr {
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.fas {
+  color: red;
+}
+.favorite-btn button{
+  border: none !important;
+  background-color: inherit!important;
+}
+.favorite-btn button i:hover{
+  font-size: 18px;
+  color: red;
+}
+.favorite-btn button i{
+  color: red;
+}
+.card_body{
+  border-bottom: 1px solid gray;
+}
+.card-body{
+  box-shadow: 5px 5px 15px #dae0f8;
+  border-radius: 5%;
+}
+.size-12{
+  font-size: 12px !important;
+}
+.bg-light{
+  background-image: linear-gradient(to right, #E0EAFC, #CFDEF3)!important;
+  /* background-color: #e2e6fc; */
+}
+.title{
+  font-size: 24px !important;
+}
+.card-text{
+  font-size: 14px !important;
+}
+
