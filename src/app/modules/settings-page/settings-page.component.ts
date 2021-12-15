@@ -1,6 +1,15 @@
-import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { UserModel } from 'src/app/models';
+import { HttpClient } from '@angular/common/http';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import {
+  AbstractControl,
+  FormControl,
+  FormGroup,
+  ValidationErrors,
+  ValidatorFn,
+  Validators,
+} from '@angular/forms';
+import { Observable, of, Subscription, timer } from 'rxjs';
+import { catchError, map, switchMap } from 'rxjs/operators';
 import { AuthStoreService } from 'src/app/services/store/auth-store.service';
 import Swal from 'sweetalert2';
 
@@ -9,19 +18,26 @@ import Swal from 'sweetalert2';
   templateUrl: './settings-page.component.html',
   styleUrls: ['./settings-page.component.css'],
 })
-export class SettingsPageComponent implements OnInit {
+export class SettingsPageComponent implements OnInit, OnDestroy {
   settingForm = new FormGroup({
-    image: new FormControl(''),
-    username: new FormControl('', Validators.required),
+    image: new FormControl('', []),
+    username: new FormControl(
+      '',
+      Validators.compose([Validators.required, Validators.maxLength(15)])
+    ),
     bio: new FormControl(''),
     email: new FormControl(''),
     password: new FormControl(''),
   });
 
-  constructor(private auth: AuthStoreService) {}
+  isImageValid: boolean = true;
+
+  user$: Subscription | undefined;
+
+  constructor(private auth: AuthStoreService, private http: HttpClient) {}
 
   ngOnInit(): void {
-    this.auth.currentUser.subscribe((userData) => {
+    this.user$ = this.auth.currentUser.subscribe((userData) => {
       this.settingForm.patchValue({
         image: userData?.image,
         username: userData?.username,
@@ -29,6 +45,22 @@ export class SettingsPageComponent implements OnInit {
         email: userData?.email,
       });
     });
+  }
+
+  ngOnDestroy(): void {
+    this.user$ ? this.user$.unsubscribe() : '';
+  }
+
+  onErrorImage() {
+    this.isImageValid = false;
+  }
+
+  onChangeImageUrl() {
+    this.isImageValid = false;
+  }
+
+  onLoaded() {
+    this.isImageValid = true;
   }
 
   onSubmit() {
@@ -43,6 +75,7 @@ export class SettingsPageComponent implements OnInit {
     }).then((result) => {
       if (result.isConfirmed) {
         let updateUser: any = {};
+
         Object.entries(this.settingForm.value).forEach(([key, value]) => {
           let valueData = value ? (value as string) : '';
 
@@ -70,5 +103,17 @@ export class SettingsPageComponent implements OnInit {
         this.auth.Logout();
       }
     });
+  }
+
+  validateUserNameFromAPIDebounce(
+    control: AbstractControl
+  ): Promise<ValidationErrors | null> {
+    return fetch(control.value)
+      .then((ok) => null)
+      .catch((err) => {
+        console.log(err);
+
+        return { isInvalid: true };
+      });
   }
 }

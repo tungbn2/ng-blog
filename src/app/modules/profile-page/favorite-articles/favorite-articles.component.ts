@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { switchMap, tap } from 'rxjs/operators';
 import { ArticlesModel } from 'src/app/models';
@@ -11,7 +11,7 @@ import { ArticleStoreService } from 'src/app/services/store/article-store.servic
   styleUrls: ['./favorite-articles.component.css'],
 })
 export class FavoriteArticlesComponent implements OnInit, OnDestroy {
-  articlesList: ArticlesModel.MultiArticles | undefined;
+  articleList: ArticlesModel.MultiArticles | undefined;
   username: string = '';
   isLoaded: boolean = false;
 
@@ -22,7 +22,8 @@ export class FavoriteArticlesComponent implements OnInit, OnDestroy {
 
   constructor(
     private route: ActivatedRoute,
-    private articleStore: ArticleStoreService
+    private articleStore: ArticleStoreService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -31,19 +32,16 @@ export class FavoriteArticlesComponent implements OnInit, OnDestroy {
         switchMap((params) => {
           if (params['username']) {
             this.username = params['username'];
-            this.articleStore.GetListArticles({ favorited: this.username });
+            this.articleStore.GetListArticles({
+              favorited: this.username,
+              limit: 9,
+            });
           }
           return this.articleStore.ArticlesListUpdate;
         }),
         tap((articlesListData) => {
-          this.articlesList = articlesListData;
+          this.articleList = articlesListData;
           this.isLoaded = true;
-
-          this.pageList = [];
-          let total = Math.ceil(articlesListData.articlesCount / 20);
-          for (let i = 1; i <= total; i++) {
-            this.pageList.push(i);
-          }
         })
       )
       .subscribe();
@@ -53,29 +51,18 @@ export class FavoriteArticlesComponent implements OnInit, OnDestroy {
     this.route$ ? this.route$.unsubscribe() : '';
   }
 
-  onNextPage() {
-    this.currentPage++;
+  onChangePage(page: number) {
+    this.isLoaded = false;
+    this.currentPage = page;
+
     this.articleStore.GetListArticles({
       favorited: this.username,
-      offset: (this.currentPage - 1) * 20,
+      offset: (this.currentPage - 1) * 9,
+      limit: 9,
     });
   }
 
-  onPrevPage() {
-    this.currentPage--;
-    this.articleStore.GetListArticles({
-      favorited: this.username,
-      offset: (this.currentPage - 1) * 20,
-    });
-  }
-
-  onGotoPage(item: number) {
-    if (this.currentPage != item) {
-      this.currentPage = item;
-      this.articleStore.GetListArticles({
-        favorited: this.username,
-        offset: (this.currentPage - 1) * 20,
-      });
-    }
+  gotoTag() {
+    this.router.navigateByUrl('/');
   }
 }
