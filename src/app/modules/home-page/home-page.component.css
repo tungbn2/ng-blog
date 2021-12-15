@@ -5,7 +5,6 @@ ul {
 hr {
   margin-top: 0;
 }
-
 .active {
   font-weight: bolder;
   border-bottom: 1px solid gainsboro;
@@ -13,7 +12,9 @@ hr {
   font-size: 1.1rem;
   color: rgb(13, 110, 250);
 }
-
+.home-page{
+  background-color: #f5f7fe;
+}
 .btn-custom {
   box-shadow: 2px 2px 5px gainsboro;
   border-radius: 1rem;
@@ -50,68 +51,64 @@ hr {
   cursor: pointer;
 }
 
-/* header */
-header {
+/* banner */
+.bg-img {
   min-height: 100vh;
-
+  padding: 40px 0;
   display: flex;
   align-items: center;
 }
 
-header h1.page-title {
+.bg-img h1.page-title {
   font-size: 70px;
-  position: relative;
-  z-index: 1;
   text-shadow: 2px 2px 4px #e2e6fc, -2px -2px 4px #fff;
-}
-
-header h1.fixed-title {
-  transform: translateY(-100%);
-  position: fixed;
-  top: 335px;
-  left: 0;
-  right: 0;
 }
 
 .header-image-bottom {
   pointer-events: none;
-  position: relative;
-  z-index: 1;
-  margin-bottom: -2px;
 }
 
 .main-container {
-  position: relative;
   background: #f5f7fe;
 }
 
 .pnf-page-title {
   font-size: 90px;
-  position: relative;
-  z-index: 1;
   text-shadow: 2px 2px 4px #e2e6fc, -2px -2px 4px #fff;
 }
 
-header .container {
-  position: relative;
-  z-index: 2;
+.caption{
+  top: 20%;
+  left: 100px;
 }
-
-.bg-img {
-  height: 100vh;
-  background-repeat: no-repeat;
-  background-origin: border-box;
-  background-size: cover;
-  background-position: center center;
-  background-attachment: fixed;
-  background-image: linear-gradient(
-      45deg,
-      rgba(152, 152, 153, 0.4) 55%,
-      rgba(245, 247, 247, 0.5)
-    ),
-    url("https://toigingiuvedep.vn/wp-content/uploads/2021/08/nhung-background-book-background-sach-dep-day-an-tuong.jpg");
+.carousel-inner{
+  height: 70vh;
+  object-fit: cover;
 }
-
 .container-width {
   width: 90%;
 }
+.row{
+  --bs-gutter-x:0;
+}
+@media screen and (max-width: 760px) {
+  .caption{
+    top:15%;
+    left: 5px;
+  }
+  .carousel-inner{
+    height: auto;
+  }
+}
+@media screen and (max-width: 470px) {
+  .caption h1{
+    font-size: 24px !important;
+  }
+  .caption p{
+    font-size: 14px !important;
+  }
+  .caption h5, .caption .tag{
+    display: none;
+  }
+}
+

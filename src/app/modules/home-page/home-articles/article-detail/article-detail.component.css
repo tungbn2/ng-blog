@@ -11,7 +11,7 @@
 }
 
 .card:hover {
-  box-shadow: 3px 3px 15px gray;
+  box-shadow: 3px 3px 15px rgb(110, 162, 235);
 }
 
 .card-body {
@@ -46,13 +46,13 @@ p {
 }
 
 .tag-item {
-  padding: 5px;
-  border: 1px solid grey;
+  border: 1px solid gray;
   border-radius: 10px;
   cursor: pointer;
-
+  font-size: 12px !important;
+  padding: 0 5px;
   display: inline-block;
-  margin-top: 0.25rem;
+  margin: 0.25rem 0;
 }
 
 .tag-item:hover {
@@ -78,3 +78,36 @@ hr {
 .fas {
   color: red;
 }
+.favorite-btn button{
+  border: none !important;
+  background-color: inherit!important;
+}
+.favorite-btn button i:hover{
+  font-size: 18px;
+  color: red;
+}
+.favorite-btn button i{
+  color: red;
+}
+.card_body{
+  border-bottom: 1px solid gray;
+}
+.card-body{
+  box-shadow: 5px 5px 15px #dae0f8;
+  border-radius: 5%;
+}
+.size-12{
+  font-size: 12px !important;
+}
+.bg-light{
+  background-image: linear-gradient(to right, #E0EAFC, #CFDEF3)!important;
+  /* background-color: #e2e6fc; */
+}
+.title{
+  font-size: 24px !important;
+}
+.card-text{
+  font-size: 14px !important;
+}
+
+

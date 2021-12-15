@@ -1,7 +1,61 @@
-<div class="home-page">
-  <!-- header -->
-  <header class="xxl bg-img">
-    <div class="container">
+<div class="home-page py-2">
+  <!-- banner -->
+  <div class="position-relative">
+    <div>
+      <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-indicators">
+          <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+          <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+          <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+        </div>
+        <div class="carousel-inner">
+          <div class="carousel-item active">
+            <img src="https://png.pngtree.com/png-clipart/20211202/ourlarge/pngtree-christmas-snow-white-png-image_4048346.png" class="d-block w-100" alt="...">
+          </div>
+          <div class="carousel-item">
+            <img src="..." class="d-block w-100" alt="...">
+          </div>
+          <div class="carousel-item">
+            <img src="..." class="d-block w-100" alt="...">
+          </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Next</span>
+        </button>
+      </div>
+      <!-- <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+        <ol class="carousel-indicators">
+          <li data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active"></li>
+          <li data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1"></li>
+          <li data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2"></li>
+        </ol>
+        <div class="carousel-inner">
+          <div class="carousel-item active">
+            <img class="d-block w-100" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcREeKJa-mogA1sODnUN9jz1HOhiOEbyQKRWXg&usqp=CAU" alt="First slide">
+          </div>
+          <div class="carousel-item">
+            <img class="d-block w-100" src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAoHCBUVFRgVFRUVGBgaGRoYGhgcGhgaGBocGRgaGRwYGhgcIS4lHB4rIxoYJzgnKy8xNTU1GiQ7QDs0Py40NTEBDAwMEA8QHhISHjQkISE0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NP/AABEIALEBHQMBIgACEQEDEQH/xAAaAAACAwEBAAAAAAAAAAAAAAAAAwECBQQG/8QANxAAAQMCBAQDBgcAAQUAAAAAAQACERIhAzFBUQQiYXEFgZETMqGxwfAUQlJi0eHxkgYjQ3Ki/8QAGAEBAQEBAQAAAAAAAAAAAAAAAAECAwT/xAAfEQEBAQEBAAIDAQEAAAAAAAAAEQESAiFRAzFBYRP/2gAMAwEAAhEDEQA/APWAdFL7kkCBOV7dFcNQ5kGNl7XiLIU0/wCa91aFMIQuFZ7pjlAgRbXqeqsW7KIQVbncT0+iHZ2EdFaEUoJwXNE1NqlpAuRB0PVLhMLUBvZAuEQr0ohSikIIV6VJalIoO33urDBdSXRygwTbM6KaUQqFwrPIJJAgbCbeqmEQgnGc000tphoBuTJ1PRUHafvNMeyDYg9f9VYQUDUFqvCmkqUhcIhXpV8XAc0w4EGJg7JSFsaTMCbSbTAF56KBIgi17byFeFEKikKz2FpIIuOx+IUwilBQdkBs2ATWkjLqPWygSLhAstixCs9hESCJEjqDqrGTcohCFpjcYhrmwIcQTa9tipaBN8tYsfVGGwEgEwJuYmOsKauFQiExzb2v1UUpUi8IhNpVnNECJm87dISrC2OLQQD7wg9lSE4BRSopUIhPGGSCds8tbKGyMto9UqQqFACdSim2fklIUb3KiE2lTSrSFnDMAxYyAe2fzTMfGLomLANECLBRSilRSxa6lxLiSSSTmVelSQgTCITaVLpOewGgySpC2QMxNj0g6FVhNpVmWOQOdj/SEIhEJtKY/AIa1xI5piDe26VY5g1T00TmYZOQJ1soa3cx1zSpCYTMbEc4y4kmIk7K2kff3dRSilQiE9utpt6dVUNVqQssQ4dITKUAIQt146CMh9lS42AgWm+pndXpRSopbmR9ypc0QImdcoz08lelFKCMF9JmlrrEQ4SLqhYmgKKUCoRCdTB0MehUUq1IvCmEylS5kbeV1mtQohBb0TKUQhC6VNKZFoTMLFLWloAg2NlN1Y5qVLWEkAZmyYG75KXtEmJjSc0pCS1RCdSihKkLYBImY1jPyUEJlKKVQuOnmiEylTCUhbgNJyv3UQmUq7mtgRM3nbpClWOeFLmplKKVakLI2QGpoaopQijSRkSNLIaBN5jomkC0TOv9KpCiwuEQm0KKVakLLVEJtKKUpCw1RCbSilKRSi0zrlr3UNkXFimhhOQyuopUoXFuvwUQmhqKVaFiYj7sppV6VMIQmEQnFqilKQ2hFKbSilZrUKpUukx0TKVZ+EW2IhKsILEUptKkARlff+koTSilNpRSlCqEUptKCEoVSrNtNgbRfTqmNYL3i3r0UUpQqlFKbSilKFBiKU2lQQlC6UUpgI3QYShdKKVcEFXdczZKEhqKU2lBalCqUUptKKUoUAUUptKKUoVSilNpQAlCqUUptKKUqQosUttNgZEX06jqmUopUUqlFKbSilWhVKKU52lgPqopShlKKU4NUUrNWFlqHScySmUqXMhKQmlSWptCilKQqlXcBAgX1O6tSilAsMUUptKkMSkJpU0JlKKUpCqUUptKksSkIe2y48Wwmb3tlMEG06xPotKlczmZgk5gRywZI0ISpHO4QabzMd5NoPb73tmCZuLHaDf5ILIgAg2cGk/rbEVR/wCpvb6mMPDgj8wJudbsHvA9WFvwQQwTMbSOgkj1FKGv+N5ys4OI8+Q+oVcKQARuLZksJt3PNPmpaAXNJdytk9CGkBpPSl09ZVDhjff392KcDl1XINJmREjapwADjoY06ldOGduw/knylQXARSoe+HMbOZi5ExBi2t4TqUUqlFKGHnc3oND1UY3ENa2omMxfSDSSRsDmgG3V6LTN5y+q4fCeKD2AQQ7mtawEZwBvE6mVo0oYVSilNpUhiUhNKKU2lFKUhVKKU2lFKUhZYopTxhmJiyrSlIcGopQMZskTlJPlH8hV4jFpo/c4DyWGlqUUq2JiBpaD+YwPT79VciM+6UhVKKVcPbBMiBmdkxrUq5hFKKU6EQlITSilOhBalISGoDE6Et18glIrSilS2wVnFKRSlcXEa1SMr/UDUTFloTZcvEuBFwdrXN/2zzZaXSpuOJrCa4ueV4AIs4XsdRys8nKoxKnOpyLKzu1zHOBB6guH/FB5DUJraYIDXTiNMGzYzOYOhEZJPDYjfbOe1wLX4bSImDL4fP6XZDyutM6dw5a8MMclDXaCAWiQTuAwf8lXgw50h7bEMgfrABaPKQT5gd0cM5sOwSQGMe8vccqCQWNk7iAegI1XUOKqeHAPAHJ7rmyXG0FwAiQNfncgpioUiogQRYQZEwDoGmfgu5mFOpnbTsuQYhcKg0N/I3lNgLuvvLYtsusPjLKDBOpmBcqNZjj47HLHsAAGokG4IggQDe3xWg8gAVWm0dTpKwOOxHlwmoRSHAW1sbanstQ44c2HZ2gCqs2EzOt7j6q7/Gc39lMfDpeSAIJm0mYEk5jLP/cLxDxFrmFpDveL2PBE3mQDEC/fPLQ6WO8gOhoykxeOxn4SvNtxW1l5LQGy6JguNxyDNjvO2YtC0zWz4Fjsw4a0PL3mHS3Vv5Re8Sb6Qek+ma4GY0MfJeO8Bw2wXnGGHSRDXGCWkH81iQegGpstzwjjg8vLXAAknK5MegFipuNedazXAz0MLl47HpYQDePW4mLX/tK4XHJcYi8mmIm2+kZrl8XxDcEZRGm1jfsmZ8w3fitfBeHiR2+X35JlK5OCY9sMcItnIJN9h9dloALG63hVKKU4MRCVYUCYjRRSnQiEpHmwSZ7X7D7Cs/Gc4NaZhotGw+81VjC4w0SdviqLu87o4riC5wMmwEfyl4uM5xlxMxG1tuyo1pOQJi57bqEmG7pjMVzQQDY2Pr1WoPExSf1BozsCTnHZY6u9sRcGwNuundTfOauetxtYHiDXATymYjyz7KzOOaQ92jT6iP5lYbwLUzled9YjRAfAI3ifJZ4xvvXoBxjCaQ4E/wBxn5p8rzAbAqkTMRrvPZMZxTxk7WSO0H6Kb4+jPyfb0iRNyBv9J+SyXeJOqkARlHmD9Eg8S6qqcyHeYkeSmeNa38mPQU5Ie3VZA8ScKiALukSchGUeWabwniBJAcd72jSPr8FnfOtZ687rSgxCScOTYQRI0139FLOKaQSD7szvbOys52qjROIcxk7Tva1swsmljeJw3w0F7Hg6cwIdLtJiB/i2HNBtAA+J+/NZXiOGCAJNWHW5pNyCC1wHm23mrmses3CzS7iXkuaAMNjxEGXCQDsYg+cFd+IKqmgTLXVdCAQR6kH46rIweJdj8QxwAFWE9j2kTFLjYnU1aWtreVrnDdhuBbzgiCI5rfmAFjE31NsyEM+ycMf9tmfOGWjPlE2H7WldD8JzgS5rmke7Dhprn9D6rk8HDnNaZgMDmDKSSZJvkAIGW6b4meR0Pu3O94NjPr0/lv7hn6rE4jDgy4hpkgmSQ5wuabWN7zF5XfweI0spd70B0AtizbXAgZm28ys7icSXNc4tINTnEOMEirSKm2nPomBrQA0OJBuYsJBgCBN4v5iV0jnXP4m8VUl1IAqY8AtJMXaDETfcTHUTl4mK4vnEBe1gFQBDJAsDLfeEfm6rU4mC4EuDXAyKgaHAS6CfdiQBeNd1n8Rwr2Aueyml/M5gcHtkkRV7oaZtP+tZKxsUlxFbY5jEuxAybQSRzG8SJzzWxwDxSQIADW8oJkFzZM+o9CsHHdh1A4bXhmpc4STaQC0AAfdsl6HhKwxheGNBAIAaJIItLrkiCDFtc1cR2xQ7n6EzAEka7TOenqleKQKnNc14oqaJJu0xSHSZuQlvdYnODftNXy+S4/FMGkA2rDmgkQZDnBpEjPOfJI1utTgeMgtLyXFrYBkk31E2Mxl1EL0HDvBAIMyAZ0uMgvK8LxADiSWWkAOIktbYwDmdMtM16TAJpDnODi6CIEDK0DtqufvI3+O67ZUpYcoL4WHWGqJSRiiYnorYb5noYV+RhN4cZmSpPCzkCtljAMgArwF17/xwzwwhwzhqRoc/RR+FO/wW9SFBana8awXcO/vp5easzhDqVtEKCE6TlkfhOqkcA4/4tYBWDU6M8sxvhu5Tm8C0aStCAi2yz1rXGM5/AsOkdlzv8POjvVbBaFUtVz0m+WIeCfsD5/yj8I8AEC95FrRlebrZpVHRqQr0kZI4R8aDzT2YmIwG02A9Jv8AH5LtdFuqitptI+RTfky+f0Rg8fNn8tuqTxzZcxzbgkAjeMvn9wux+CDmAfiuDjGBhZFuaelo0UzzluNb72TXHwDC3jMRs8oa50NFIl9En/6z6Leob37kn5rB4ZzhxuKN2N9acMrZk6mFnfO63nvzhHhsRidMR6V4oWhpdBkikwBlNzlnBGehKpwD74g/e75lW4jADjVAJ8r/AHZXjbWe85mMDEa0uFweZpoIdN6rWABE7bwurEMNAdVMi3NLRMQBNzc2g5qPFeHdhsqpYYcJzkS5scw00vPvJmFwjoFLDVEVh9Mn9QiHD70hb+XJm41b6w17Wlgksdy1AEB3MTAInXy3WfwmHU9rXOok0Oe5x0ixzjQbC2y0/E+EDCPavc8CYY3EqxJOUlwIic+/RcnF4TuWtpLJgFuHQ81XaCS0AkCLZWUBj4bmvqOIx9Mhri6sNzpLi0Fo3Ay9CF0+G4tbi41PcCXFxJoG8TEGwO3aFyPwzNBqw8OSRZ0u0mm1bjboLC2ulwnCf+MMIY01Vuww04ha4jmJJMXMNtkEwdWK0vBDTS7Ijdp0I2N75j58nE4gcWscC11bDc2IDhcHUSNY6gLWw+EuHEmbEXPKemxWb4vwz/aYIc6QXwSbOuRU22c/CCtafGncExrW1EGXc/eozc5ixW5whLgHEADQCdLExNp2/lAxdwLfdlY4/Qrn6zd/jt458/084oFiud3Ey0jU/wBf2l4jqlVo3ErXnxmZdY9/l3dmfpBcZnXOUzCxYnqlQiF0mSOV21qgygk9V0K0LzdPTy5KkVLpdhg6BAwhsFesOdIcY1BVal1Bo2VlOl5chJUiV1IhOjlyOMKKl10qCwbJ0cuWpSHwuj2Tdgp9mNk6xOdctSKl0+ybsFPsxsFesOdctShxBzEp54caEhA4caklOsTnXI7Cb2VfwxOV1oBgGQCunenGPJHhMRvFlxY4scIqAlo5GC57iFsMwpN7BasKjsMFX/pqf83n/C8Oaz+8/wA/VaIwJ19Ar8P4cGAhrjczePmFduCZuI62Wu7/AFnPE/jG/wCoWBvDvOsszy99q1WtbmAPmrO4dxzA84Ujh3bBTrPted+kzHRQYOiscFxzj1R7B3T1Uufazfop2G0/lUHCb1Tvw7tx8VP4d24V6/1Of8IGE1Yv/UDTXw5axxoxA9xa1xgBzMyOlXovRN4c6lMbggde6m+sXPBAvkJR+Gm8Qd12AIWe9/jXOf1xDgd3fBX/AALdz8P4XUhTr19rx5+nF+DIMtI80h/DO2+S1EK96m+MLaVYOSwolItOqUVJdSiUhTa0VpMolIU6tRWlVIlOVptaK0qpRKclOrR7TokyolIU/wBoj2nRJg7KwYdkmJdX9r0R7XooGF1VxhhT4X5QMTorSdlZCihCEIBCEIBCEIBCEIBCEIBCEIBCEIBCEIBCEIFnD6qPZdUxCtSYX7IblHsh1TEKXSKezCn2Y2VkJVVoGwU0DYKyEFaRsEUDYKyEFaRsFMKUIBCEIBCEIBCEIBCEIBCEIBCEIBCEIBCEIBCEIBCEIBCEIBCEIBCEIBCEIIQpQgEIQgEIQgEIQgEIQgEIQgEIQgEIQgEIQgEIQgEIQgEIQgEIQgEIQgEIQgEIQg//2Q==" alt="Second slide">
+          </div>
+          <div class="carousel-item">
+            <img class="d-block w-100" src="data:image/jpeg;base64,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" alt="Third slide">
+          </div>
+        </div>
+        <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="sr-only">Previous</span>
+        </a>
+        <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-bs-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="sr-only">Next</span>
+        </a>
+      </div>   -->
+    </div>
+    <div class="container position-absolute caption">
       <div class="row">
         <div class="col-lg-6">
           <h1 class="page-title">Welcome to Team 1 Blog</h1>
@@ -10,7 +64,7 @@
             detail.
           </p>
           <h5 class="mb-30">Popular Tags</h5>
-          <div *ngIf="!tagList.length">
+          <div class="tag" *ngIf="!tagList.length">
             <span
               *ngFor="let tagItem of tagList"
               (click)="onNavigateByTag(tagItem)"
@@ -39,17 +93,16 @@
       <!-- / row -->
     </div>
     <!-- / container -->
-  </header>
-
+  </div>
   <!-- body -->
 
-  <div class="row" id="main-content" #mainContent style="height: 100vh">
-    <div class="p-4">
+  <div class="row" id="main-content" #mainContent>
+    <div class="container px-0">
       <!-- nav -->
-      <div class="home-header row d-flex justify-content-center">
+      <div class="home-header row d-flex justify-content-center py-5">
         <div class="tag-group col-md-6 d-flex justify-content-around">
           <button
-            class="btn btn-custom fs-4"
+            class="btn btn-custom fs-4 bg-light"
             [ngClass]="{ active: status == 'feed' }"
             (click)="onGotoFeed()"
             *ngIf="currentUser"
@@ -58,7 +111,7 @@
           </button>
 
           <button
-            class="btn btn-custom fs-4"
+            class="btn btn-custom fs-4 bg-light"
             [ngClass]="{ active: status == 'global' }"
             (click)="onGotoGlobal()"
             [disabled]="!currentUser"
@@ -66,38 +119,9 @@
             Global Feed
           </button>
 
-          <button class="btn btn-custom active fs-4" *ngIf="status == 'tag'">
+          <button class="btn btn-custom active fs-4 bg-light" *ngIf="status == 'tag'">
             Tag Feed
           </button>
-        </div>
-
-        <div class="pagination d-flex justify-content-center mt-4">
-          <nav aria-label="Page navigation example" *ngIf="pageList.length">
-            <ul class="pagination m-0">
-              <li class="page-item" [ngClass]="{ disabled: currentPage == 1 }">
-                <a
-                  class="page-link"
-                  aria-label="Previous"
-                  (click)="onPrevPage()"
-                >
-                  <span aria-hidden="true">&laquo;</span>
-                </a>
-              </li>
-
-              <li class="page-item" *ngFor="let item of pageList">
-                <a class="page-link" (click)="onGotoPage(item)">{{ item }}</a>
-              </li>
-
-              <li
-                class="page-item"
-                [ngClass]="{ disabled: currentPage == pageList.length }"
-              >
-                <a class="page-link" aria-label="Next" (click)="onNextPage()">
-                  <span aria-hidden="true">&raquo;</span>
-                </a>
-              </li>
-            </ul>
-          </nav>
         </div>
       </div>
 
@@ -148,3 +172,5 @@
   </div>
 
 </div>
+
+
