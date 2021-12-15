@@ -1,11 +1,11 @@
-import {ProfileData } from './Profile.model';
+import { ProfileData } from './Profile.model';
 
 export interface Article {
   slug: string;
   title: string;
   description: string;
   body: string;
-  tagList: string;
+  tagList: string[];
   createdAt: string;
   updatedAt: string;
   favorited: boolean;
@@ -23,21 +23,18 @@ export interface MultiArticles {
 }
 
 export interface NewArticle {
-  article: {
-    title: string;
-    description: string;
-    body: string;
-    tagList?: string[];
-  };
+  article: ArticleData
+}
+
+export interface ArticleData {
+  title?: string;
+  description?: string;
+  body?: string;
+  tagList?: string[];
 }
 
 export interface UpdateArticle {
-  article: {
-    title?: string;
-    description?: string;
-    body?: string;
-    tagList?: string[];
-  };
+  article: ArticleData;
 }
 
 export interface Comment {
@@ -64,4 +61,9 @@ export interface NewComment {
 
 export interface Tags {
   tags: string[];
+}
+
+export interface CurrentArticleAndProfile {
+  currentArticle: Article;
+  author: ProfileData;
 }

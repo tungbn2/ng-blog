@@ -42,6 +42,4 @@ export function EndpointsAuthen() {
   };
 }
 
-export const HandleError = (err: any) => {
-  alert(err.error.message);
-};
+

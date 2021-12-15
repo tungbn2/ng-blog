@@ -7,7 +7,7 @@ import { AuthStoreService } from './services/store/auth-store.service';
   styleUrls: ['./app.component.css'],
 })
 export class AppComponent implements OnInit {
-  constructor(private auth: AuthStoreService ) {}
+  constructor(private auth: AuthStoreService) {}
 
   ngOnInit() {
     this.auth.autoLogin();

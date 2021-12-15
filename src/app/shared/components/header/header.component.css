@@ -5,3 +5,12 @@
   border: 2px solid gray;
   margin: auto 5px;
 }
+
+.nav-link {
+  font-size: 1.1rem;
+}
+
+.nav-item {
+  margin-left: 0 !important;
+}
+

@@ -1,25 +1,104 @@
-<div class="loading text-center mt-4">
-  <div class="spinner-grow text-primary" role="status">
-    <span class="visually-hidden">Loading...</span>
-  </div>
-  <div class="spinner-grow text-secondary" role="status">
-    <span class="visually-hidden">Loading...</span>
-  </div>
-  <div class="spinner-grow text-success" role="status">
-    <span class="visually-hidden">Loading...</span>
-  </div>
-  <div class="spinner-grow text-danger" role="status">
-    <span class="visually-hidden">Loading...</span>
-  </div>
-  <div class="spinner-grow text-warning" role="status">
-    <span class="visually-hidden">Loading...</span>
-  </div>
-  <div class="spinner-grow text-info" role="status">
-    <span class="visually-hidden">Loading...</span>
-  </div>
-</div>
-
 <div class="home-page">
-  <p>home-page works!</p>
-  <app-home-articles></app-home-articles>
+  <!-- header -->
+  <header class="xxl bg-img">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-6">
+          <h1 class="page-title">Welcome to Team 1 Blog</h1>
+          <p class="mb-3">
+            Team 1 Blog is a theme designed and developed with attention to
+            detail.
+          </p>
+          <h5 class="mb-30">Popular Tags</h5>
+          <div>
+            <span class="tag-link" (click)="onNavigateByTag('welcome')">
+              #welcome
+            </span>
+
+            <span class="tag-link" (click)="onNavigateByTag('implementations')">
+              #implementations
+            </span>
+
+            <span class="tag-link" (click)="onNavigateByTag('codebaseShow')">
+              #codebaseShow
+            </span>
+
+            <span
+              *ngFor="let tagItem of tagList"
+              (click)="onNavigateByTag(tagItem)"
+              class="tag-link"
+            >
+              #{{ tagItem }}
+            </span>
+          </div>
+        </div>
+        <!-- column -->
+        <div class="col-lg-6"></div>
+        <!-- column -->
+      </div>
+      <!-- / row -->
+    </div>
+    <!-- / container -->
+  </header>
+
+  <!-- body -->
+
+  <div class="row" id="main-content" #mainContent style="height: 100vh">
+    <div class="p-4">
+      <!-- nav -->
+      <div class="home-header row d-flex justify-content-center">
+        <div class="tag-group col-md-6 d-flex justify-content-around mb-2">
+          <button
+            class="btn btn-custom fs-4"
+            [ngClass]="{ active: status == 'feed' }"
+            (click)="onGotoFeed()"
+            *ngIf="currentUser"
+          >
+            Your Feed
+          </button>
+
+          <button
+            class="btn btn-custom fs-4"
+            [ngClass]="{ active: status == 'global' }"
+            (click)="onGotoGlobal()"
+            [disabled]="!currentUser"
+          >
+            Global Feed
+          </button>
+
+          <button class="btn btn-custom active fs-4" *ngIf="status == 'tag'">
+            Tag Feed
+          </button>
+        </div>
+      </div>
+
+      <!-- body -->
+      <div class="home-body d-flex justify-content-center mt-4">
+        <div class="container-width">
+          <div class="list-article" *ngIf="isLoaded">
+            <app-home-articles
+              [articleList]="articleList"
+              (gotoTag)="onNavigateByTag($event)"
+            ></app-home-articles>
+            <app-pagiantor
+              [totalArticle]="articleList ? articleList.articlesCount : 0"
+              (changePage)="onChangePage($event)"
+              [currentPage]="currentPage"
+            ></app-pagiantor>
+          </div>
+
+          <app-loading *ngIf="!isLoaded"></app-loading>
+          <div
+            class="no-article"
+            *ngIf="articleList?.articlesCount == 0 && isLoaded && articleList"
+          >
+            <h3>Oops,... There is no article here</h3>
+            <a (click)="onGotoGlobal()" class="btn btn-outline-primary"
+              ><i class="fas fa-backward"></i> Back to Global Feed</a
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

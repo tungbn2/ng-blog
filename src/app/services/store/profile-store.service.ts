@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { ProfileModel, UserModel, ArticlesModel } from 'src/app/models';
 import { ConnectApiService } from '../connect-api/connect-api.service';
 import { switchMap, tap } from 'rxjs/operators';
+import { HandleErrorService } from './handle-error.service';
 
 export interface ProfileWithArticle {
   profile?: ProfileModel.ProfileData;
@@ -19,12 +20,25 @@ export class ProfileStoreService {
     articlesFavorite: [],
   };
 
-  ProfileData = new BehaviorSubject<ProfileModel.ProfileData | null>(null);
+  ProfileUpdate = new Subject<ProfileModel.ProfileData>();
   ProfileWithArticleUpdate = new Subject<ProfileWithArticle>();
 
-  constructor(private api: ConnectApiService) {}
+  constructor(
+    private api: ConnectApiService,
+    private handleErr: HandleErrorService
+  ) {}
 
   GetProfile(username: string) {
+    this.api.GetProfile(username).subscribe(
+      (profileData) => {
+        this.profile = profileData.profile;
+        this.ProfileUpdate.next({ ...this.profile });
+      },
+      (err) => this.handleErr.HandleError(err)
+    );
+  }
+
+  GetFullProfile(username: string) {
     this.api
       .GetProfile(username)
       .pipe(
@@ -50,7 +64,7 @@ export class ProfileStoreService {
       )
       .subscribe(
         () => {},
-        (err) => console.log(err)
+        (err) => this.handleErr.HandleError(err)
       );
   }
 
@@ -58,9 +72,9 @@ export class ProfileStoreService {
     this.api.PostFollowUser(username).subscribe(
       (profile) => {
         this.profile = profile.profile;
-        this.ProfileData.next({ ...this.profile });
+        this.ProfileUpdate.next({ ...this.profile });
       },
-      (err) => console.log(err)
+      (err) => this.handleErr.HandleError(err)
     );
   }
 
@@ -68,9 +82,9 @@ export class ProfileStoreService {
     this.api.DeleteUnfollowUser(username).subscribe(
       (profile) => {
         this.profile = profile.profile;
-        this.ProfileData.next({ ...this.profile });
+        this.ProfileUpdate.next({ ...this.profile });
       },
-      (err) => console.log(err)
+      (err) => this.handleErr.HandleError(err)
     );
   }
 }
