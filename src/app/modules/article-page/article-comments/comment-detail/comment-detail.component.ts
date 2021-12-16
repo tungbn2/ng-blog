@@ -30,7 +30,6 @@ export class CommentDetailComponent implements OnInit {
   ngOnInit(): void {}
 
   onDeleteComment() {
-    // this.commentStore.DeleteComment(this.slug, this.comment.id);
     Swal.fire({
       title: 'Are you sure?',
       text: 'You want to delete this comment!',

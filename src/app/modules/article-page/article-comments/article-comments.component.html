@@ -1,32 +1,35 @@
 <div class="comment-article">
   <div class="comment-box form-group mb-3 mt-2 p-4" *ngIf="currentUser">
-    <textarea
-      name="comment"
-      class="form-control mb-3"
-      [formControl]="commentInput"
-      placeholder="Enter your comment ..."
-      rows="3"
-    ></textarea>
+    <form [formGroup]="commentForm" autocomplete="off" (ngSubmit)="onSubmitComment()">
+      <textarea
+        type="text"
+        formControlName="comment"
+        name="comment"
+        class="form-control mb-3"
+        placeholder="Enter your comment ..."
+        rows="3"
+      ></textarea>
 
-    <div class="group-button d-flex justify-content-between">
-      <!-- avatar -->
-      <a [routerLink]="['/profile', currentUser.username]"
-        ><img
-          [src]="currentUser.image"
-          alt=""
-          class="avatar"
-          (error)="changeSource($event)"
-      /></a>
+      <div class="group-button d-flex justify-content-between">
+        <!-- avatar -->
+        <a [routerLink]="['/profile', currentUser.username]"
+          ><img
+            [src]="currentUser.image"
+            alt=""
+            class="avatar"
+            (error)="changeSource($event)"
+        /></a>
 
-      <!-- button -->
-      <button
-        class="btn btn-success"
-        (click)="onSubmitComment()"
-        [disabled]="commentInput.invalid"
-      >
-        <i class="fas fa-plus-circle"></i> Create Comment
-      </button>
-    </div>
+        <!-- button -->
+        <button
+          type="submit"
+          class="btn btn-success"
+          [disabled]="commentForm.invalid"
+        >
+          <i class="fas fa-plus-circle"></i> Create Comment
+        </button>
+      </div>
+    </form>
   </div>
 
   <app-loading *ngIf="!isLoaded"></app-loading>

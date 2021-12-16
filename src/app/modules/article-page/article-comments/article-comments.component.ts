@@ -1,10 +1,9 @@
-import { FormControl, Validators } from '@angular/forms';
+import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { CommentStoreService } from './../../../services/store/comment-store.service';
 import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { ArticlesModel, UserModel } from 'src/app/models';
 import { AuthStoreService } from 'src/app/services/store/auth-store.service';
-import { switchMap, tap } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -15,8 +14,8 @@ import { Subscription } from 'rxjs';
 export class ArticleCommentsComponent implements OnInit, OnDestroy {
   @Input() isUser: boolean = false;
 
+  commentForm!: FormGroup;
   commentList: ArticlesModel.Comment[] = [];
-  commentInput = new FormControl('', Validators.required);
   slug: string = '';
   isLoaded: boolean = false;
   currentUser: UserModel.User | null = null;
@@ -25,6 +24,7 @@ export class ArticleCommentsComponent implements OnInit, OnDestroy {
   user$: Subscription | undefined;
 
   constructor(
+    private _formBuilder : FormBuilder,
     private commentStore: CommentStoreService,
     private authStore: AuthStoreService,
     private route: ActivatedRoute
@@ -34,22 +34,24 @@ export class ArticleCommentsComponent implements OnInit, OnDestroy {
     this.user$ = this.authStore.currentUser.subscribe((user) => {
       this.currentUser = user;
     });
-    this.route$ = this.route.params
-      .pipe(
-        switchMap((param) => {
-          this.isLoaded = false;
-          this.slug = param['slug'];
-          this.commentStore.GetCommentsFromArticle(this.slug);
-          return this.commentStore.CommentListData;
-        }),
-        tap((commentData) => {
-          this.commentList = commentData;
-          setTimeout(() => {
-            this.isLoaded = true;
-          }, 500);
-        })
-      )
-      .subscribe();
+    this.route$ = this.route.params.subscribe(data => { 
+      this.isLoaded = false;
+      this.slug = data['slug'];
+      this.commentStore.GetCommentsFromArticle(this.slug);
+      this.commentStore.CommentListData.subscribe(commentData => { 
+        this.commentList = commentData;
+        setTimeout(() => {
+          this.isLoaded = true;
+        }, 500);
+      })
+      this.createForm();
+    }) 
+  }
+
+  createForm() {
+    this.commentForm = this._formBuilder.group({
+      comment: ['', Validators.required]
+    })
   }
 
   changeSource(event: any) {
@@ -62,7 +64,9 @@ export class ArticleCommentsComponent implements OnInit, OnDestroy {
   }
 
   onSubmitComment() {
-    this.commentStore.AddCommentsToArticle(this.slug, this.commentInput.value);
-    this.commentInput.setValue('');
+    this.commentStore.AddCommentsToArticle(this.slug, this.commentForm.value.comment);
+    this.commentForm.setValue({
+      comment: ''
+    })
   }
 }
